@@ -1,0 +1,63 @@
+<config_page>:
+    orientation: 'vertical'
+    padding: 10
+    spacing: 10
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+
+        Label:
+            text: 'MQTT-Host'
+        TextInput:
+            id: mqtt_host_input
+
+        Label:
+            text: 'Port'
+        TextInput:
+            id: port_input
+
+        Label:
+            text: "User Name"
+        TextInput:
+            id: username_input
+
+        Label:
+            text: 'Password'
+        TextInput:
+            id: password_input
+
+        Label:
+            text: "Full Topic"
+        TextInput:
+            id: full_topic_input
+
+        Label:
+            text: 'Intervals'
+        Spinner:
+            id: intervals_spinner
+            text: "Select Interval"
+            values: ["2sec","5sec","10sec"]
+
+        Label:
+            text: 'Dimensions'
+        Spinner:
+            id: dimensions_spinner
+            text: "Select Dimension"
+            values: ['1D','2D','3D']
+
+    BoxLayout:
+        size_hint_y: 0.2
+        spacing: 10
+
+        Button:
+            text: "Check Connection"
+            on_press: root.check_connection()
+
+        Button:
+            text: 'Go'
+            on_press: root.go()
+
+        Button:
+            text: 'Back'
+            on_press: root.back()
