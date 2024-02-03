@@ -3,19 +3,31 @@
     padding: 10
     spacing: 10
 
+  
     BoxLayout:
-        orientation: 'vertical'
-        spacing: 10
+        orientation: 'horizontal'
+        size_hint_y: 0.2
+        size_hint_x: 0.8      
+        
 
         Label:
             text: 'MQTT-Host'
+            
+            
         TextInput:
             id: mqtt_host_input
 
         Label:
             text: 'Port'
+            
+            
         TextInput:
             id: port_input
+        
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.2
+        size_hint_x: 0.8
 
         Label:
             text: "User Name"
@@ -26,6 +38,11 @@
             text: 'Password'
         TextInput:
             id: password_input
+    
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.2
+        size_hint_x: 0.8
 
         Label:
             text: "Full Topic"
@@ -47,8 +64,8 @@
             values: ['1D','2D','3D']
 
     BoxLayout:
-        size_hint_y: 0.2
-        spacing: 10
+        orientation: 'horizontal'
+        
 
         Button:
             text: "Check Connection"
