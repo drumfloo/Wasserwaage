@@ -1,7 +1,7 @@
 <config_page>:
     orientation: 'vertical'
     padding: 10
-    spacing: 20
+    spacing: 10
 
     BoxLayout:
         orientation: 'horizontal'
@@ -11,13 +11,9 @@
         Label:
             text: 'MQTT-Host'
             size_hint_x: 0.2
-
         TextInput:
             id: mqtt_host_input
             size_hint_x: 0.4
-            multiline: False
-            font_size:      
-            
 
         Label:
             text: 'Port'
@@ -25,7 +21,6 @@
         TextInput:
             id: port_input
             size_hint_x: 0.3
-            multiline: False
         
     BoxLayout:
         orientation: 'horizontal'
@@ -38,8 +33,6 @@
         TextInput:
             id: username_input
             size_hint_x: 0.4
-            multiline: False
-            
 
         Label:
             text: 'Password'
@@ -47,7 +40,6 @@
         TextInput:
             id: password_input
             size_hint_x: 0.3
-            multiline: False
         
     BoxLayout:
         orientation: 'horizontal'
@@ -60,8 +52,7 @@
         TextInput:
             id: full_topic_input
             size_hint_x: 0.8
-            multiline: False
-
+    
     BoxLayout:
         orientation: 'horizontal'
         size_hint_y: None
