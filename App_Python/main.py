@@ -12,14 +12,19 @@ class ConfigScreen(Screen):
     #     super(ConfigScreen, self).__init__(**kwargs)
     #     self.size_hint = (1, 1)
     
+    userIN = {}
+    
     def btn_back(self):
         print("BACK BUTTON...")
         sm = self.manager
         sm.current = 'start'
         
 
-    def btn_go(self):
-        print("GO...")
+    def btn_go(self, inputData, value):
+        self.userIN[inputData] = value
+        print(self.userIN)
+        
+
     
     def btn_checkConnection(self):
         print("CHECK_CONNECTION...")

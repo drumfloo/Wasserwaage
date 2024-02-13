@@ -19,6 +19,7 @@
                     id: mqtt_host_input
                     size_hint_x: 0.4
                     multiline: False
+                    on_text: root.btn_go("mqtt_host", self.text)
                    
                 Label:
                     text: 'Port'
@@ -28,6 +29,7 @@
                     id: port_input
                     size_hint_x: 0.3
                     multiline: False
+                    on_text: root.btn_go("port", self.text)
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -42,6 +44,7 @@
                     id: username_input
                     size_hint_x: 0.4
                     multiline: False
+                    on_text: root.btn_go("UserName", self.text)
 
                 Label:
                     text: 'Password'
@@ -52,6 +55,7 @@
                     size_hint_x: 0.3
                     multiline: False
                     password: True
+                    on_text: root.btn_go("password", self.text)
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -66,6 +70,7 @@
                     id: full_topic_input
                     size_hint_x: 0.8
                     multiline: False
+                    on_text: root.btn_go("fullTopic", self.text)
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -77,11 +82,13 @@
                     id: intervals_spinner
                     text: "Select Interval"
                     values: ["2sec", "5sec", "10sec"]
+                    on_text: root.btn_go("intervals", self.text)
 
                 Spinner:
                     id: dimensions_spinner
                     text: "Select Dimension"
                     values: ['1D', '2D', '3D']
+                    on_text: root.btn_go("dimensions", self.text)
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -95,11 +102,19 @@
 
                 Button:
                     text: 'Go'
+                    size_hint_x: 0.3
                     on_press: 
-                        root.btn_go()
+                        root.btn_go("mqtt_host", mqtt_host_input.text)
+                        root.btn_go("port", port_input.text)
+                        root.btn_go("username", username_input.text)
+                        root.btn_go("password", password_input.text)
+                        root.btn_go("fullTopic", full_topic_input.text)
+                        root.btn_go("interval", intervals_spinner.text)
+                        root.btn_go("dimension", dimensions_spinner.text)
+
                         root.manager.transition.direction = 'left'
                     
-                    size_hint_x: 0.3
+                    
 
                 Button:
                     text: 'Back'
