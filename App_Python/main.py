@@ -7,7 +7,7 @@ from kivy.core.window import Window
 
 from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
-
+import json
 import paho.mqtt.client as mqtt
 
 
@@ -16,8 +16,9 @@ class ConfigScreen(Screen):
     # def __init__(self, **kwargs):
     #     super(ConfigScreen, self).__init__(**kwargs)
     #     self.size_hint = (1, 1)
-    
+    credentialKeys = ["mqtt_host", "port", "UserName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
+
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 
         key:value pairs in a Python dict"""
@@ -25,10 +26,18 @@ class ConfigScreen(Screen):
         print(self.userIN) # DEBUG
 
     
-    def mqtt_handler(self, host, port, username, password):
-        mqtt_client = mqtt.Client()
-        mqtt_client.connect(host, port, 60)
-        mqtt_client.loop_start()
+    def mqtt_handler(self, broker_address, broker_port):
+        # sample-data, replace with acceleration data
+        topic = "test_topic"
+        data = {
+            "key1": "value1",
+            "key2": "value2",
+            "key3": "value3"
+        }
+        client = mqtt.Client()
+        client.connect(broker_address, broker_port)
+        jsonData = json.dumps(data)
+        client.publish(topic, jsonData)
 
 
 # Buttons
@@ -40,8 +49,15 @@ class ConfigScreen(Screen):
         
 
     def btn_go(self):
-        """Navigates back to scale if login data set and connection correct"""
-        if len(self.userIN) < 7:
+        """Navigates back to scale if login data set and connection correct. Else it 
+        shows a popup-hint"""
+        popItUp = True
+        for val in self.credentialKeys:
+            if val not in self.userIN:
+                popItUp = False
+                break
+
+        if not popItUp:
             popup = Popup(
             title="Something went wrong... there are wrong or missing informations!",
             #content='Cant establish a working connection...',
@@ -51,12 +67,11 @@ class ConfigScreen(Screen):
             )
             # on_press=popup.dismiss
             popup.open()
+        else:
+            # start giving login credentials to mqtt an switch back to scaler-panel
+            sm = self.manager
+            sm.current = 'start'
 
-        
-        # if data correct:
-        #    sm = self.manager
-        #    sm.current = 'start'
-        
         #self.mqtt_handler(self.userIN['mqtt_host'], self.userIN['port'], self.userIN['UserName'], self.userIN['password'])
         #print(self.userIN['mqtt_host'],self.userIN['port'], self.userIN['UserName'], self.userIN['password'] )
 
