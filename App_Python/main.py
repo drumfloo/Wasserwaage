@@ -2,9 +2,14 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
+from kivy.uix.popup import Popup
+from kivy.core.window import Window
 
 from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
+
+import paho.mqtt.client as mqtt
+
 
 class ConfigScreen(Screen):
         
@@ -13,28 +18,58 @@ class ConfigScreen(Screen):
     #     self.size_hint = (1, 1)
     
     userIN = {}
+    def login_data_fetcher(self, type, value):
+        """Fetches login data for mqtt connection. Saved as 
+        key:value pairs in a Python dict"""
+        self.userIN[type] = value
+        print(self.userIN) # DEBUG
+
     
+    def mqtt_handler(self, host, port, username, password):
+        mqtt_client = mqtt.Client()
+        mqtt_client.connect(host, port, 60)
+        mqtt_client.loop_start()
+
+
+# Buttons
     def btn_back(self):
-        print("BACK BUTTON...")
+        """Navigate back to *sm.current* value defined in ScaleApp class"""
+        print("BACK BUTTON...")# DEBUG
         sm = self.manager
         sm.current = 'start'
         
 
-    def btn_go(self, inputData, value):
-        self.userIN[inputData] = value
-        print(self.userIN)
+    def btn_go(self):
+        """Navigates back to scale if login data set and connection correct"""
+        if len(self.userIN) < 7:
+            popup = Popup(
+            title="Something went wrong... there are wrong or missing informations!",
+            #content='Cant establish a working connection...',
+            size_hint=(None, None),
+            size=(250, 100), #size=(Window.width / 3, Window.height / 3),
+            auto_dismiss=True,
+            )
+            # on_press=popup.dismiss
+            popup.open()
+
         
+        # if data correct:
+        #    sm = self.manager
+        #    sm.current = 'start'
+        
+        #self.mqtt_handler(self.userIN['mqtt_host'], self.userIN['port'], self.userIN['UserName'], self.userIN['password'])
+        #print(self.userIN['mqtt_host'],self.userIN['port'], self.userIN['UserName'], self.userIN['password'] )
 
     
     def btn_checkConnection(self):
-        print("CHECK_CONNECTION...")
-        
+        """Checks if connection credentials set correct and connection can be ethablished"""
+        print("CHECK_CONNECTION...")# DEBUG        
 
 
 class StartScreen(Screen):
    
     def btn_config(self):
-        # go to configuration screen
+        """Switches to configuration panel to set mqtt credentials"""
         print("BTN_CONFIG...")
         sm = self.manager
         sm.current = 'config'
@@ -42,9 +77,9 @@ class StartScreen(Screen):
 
 
 class ScaleApp(App):
+    acceleration = 0
 
-    def build(self):
-        
+    def build(self):        
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
