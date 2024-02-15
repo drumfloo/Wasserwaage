@@ -4,7 +4,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
-
 from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
 import json
@@ -16,7 +15,7 @@ class ConfigScreen(Screen):
     # def __init__(self, **kwargs):
     #     super(ConfigScreen, self).__init__(**kwargs)
     #     self.size_hint = (1, 1)
-    credentialKeys = ["mqtt_host", "port", "UserName", "password", "fullTopic", "intervals", "dimensions"]
+    credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
 
     def login_data_fetcher(self, type, value):
@@ -103,8 +102,6 @@ class ScaleApp(App):
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
         return sm
-
-
 
     def get_acceleration(self):
         accelerometer.enable()
