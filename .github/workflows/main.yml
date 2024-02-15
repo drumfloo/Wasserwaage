@@ -21,7 +21,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('App_Python/buildozer.spec') }} # Replace with your path
+          key: buildozer-global-${{ hashFiles('App_Python/buildozer.spec') }} 
 
       - uses: actions/cache@v2
         with:
