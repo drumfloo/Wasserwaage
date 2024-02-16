@@ -124,7 +124,7 @@ fullscreen = 0
 #android.ndk_api = 21
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path =
+android.ndk_path = ~
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path =
