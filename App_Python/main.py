@@ -89,7 +89,6 @@ class StartScreen(Screen):
         sm.current = 'config'
 
 
-
 class ScaleApp(App):
     acceleration = 0
 
