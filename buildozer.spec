@@ -15,7 +15,7 @@ package.name = ScaleApp
 package.domain = org.test
 
 # (str) Source code where the main.py live
-source.dir = App_Python
+source.dir = .
 
 # (list) Source files to include (leave empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
