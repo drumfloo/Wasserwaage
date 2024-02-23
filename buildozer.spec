@@ -1,7 +1,7 @@
 [app]
 
-title = StreichholzSpiel
-package.name = streichholzspiel
+title = Wasserwaage
+package.name = wasserwaage
 package.domain = gsog.de
 
 source.dir = .
