@@ -1,3 +1,12 @@
+Switch:
+                text: 'Logger'
+                id: toggle_switch
+                active: False
+                on_active:
+                    root.manager.transition.direction = 'right'
+                    root.btn_config()
+
+
 Button:
                 text: 'Logger'
                 size_hint: None, None

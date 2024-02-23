@@ -4,7 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
-from plyer import accelerometer
+#from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
 import json
 import paho.mqtt.client as mqtt
@@ -17,7 +17,7 @@ class ConfigScreen(Screen):
     #     self.size_hint = (1, 1)
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
-   # popItUp = False
+    popItUp = False
 
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 
@@ -45,19 +45,19 @@ class ConfigScreen(Screen):
         """Navigate back to *sm.current* value defined in ScaleApp class"""
         print("BACK BUTTON...")# DEBUG
         sm = self.manager
-        sm.current = 'start'
+        sm.current = 'start'     
         
 
     def btn_go(self):
         """Navigates back to scale if login data set and connection correct. Else it 
         shows a popup-hint"""
-        popItUp = True
+        #self.popItUp = True
         for val in self.credentialKeys:
             if val not in self.userIN:
-                popItUp = False
+                self.popItUp = False
                 break
 
-        if not popItUp:
+        if not self.popItUp:
             popup = Popup(
             title="Something went wrong... there are wrong or missing informations!",
             #content='Cant establish a working connection...',
@@ -88,6 +88,14 @@ class StartScreen(Screen):
         print("BTN_CONFIG...")
         sm = self.manager
         sm.current = 'config'
+    
+    def toggle_state(self):
+        if ConfigScreen.popItUp == True:
+            self.ids.toggle_button.text = 'Logger'
+            #self.ids.toggle_button.color = 0, 1, 0, 1  # Green text
+        else:
+            #self.ids.toggle_button.text = 'Logger'
+            self.ids.toggle_button.color =  0, 1, 0, 1
 
 
 class ScaleApp(App):
