@@ -17,6 +17,7 @@ class ConfigScreen(Screen):
     #     self.size_hint = (1, 1)
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
+   # popItUp = False
 
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 

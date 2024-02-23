@@ -1,0 +1,28 @@
+<StartScreen>:
+    RelativeLayout:
+        
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
+
+            
+            Switch:
+                text: 'Logger'
+                id: toggle_switch
+                active: False
+                on_active:
+                    root.manager.transition.direction = 'right'
+                    root.btn_config()
+
+            ToggleButton:
+                id: toggle_button
+                text: 'Off'
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.btn_config()
+                size_hint: (None, None)
+                width: '100dp'
+                height: '48dp'
+                          
+
+                          
