@@ -98,6 +98,24 @@ class StartScreen(Screen):
         #     #self.ids.toggle_button.text = 'Logger'
         #     self.ids.toggle_button.color =  0, 1, 0, 1
 
+    def calculate_points(x1, y1, x2, y2, steps=5):
+        dx = x2 - x1
+        dy = y2 - y1
+        dist = sqrt(dx * dx + dy * dy)
+        if dist < steps:
+            return
+        o = []
+        m = dist / steps
+        for i in range(1, int(m)):
+            mi = i / m
+            lastx = x1 + dx * mi
+            lasty = y1 + dy * mi
+            o.extend([lastx, lasty])
+        return o
+
+
+
+
 
 class ScaleApp(App):
     acceleration = 0
