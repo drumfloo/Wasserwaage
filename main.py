@@ -51,7 +51,7 @@ class ConfigScreen(Screen):
     def btn_go(self):
         """Navigates back to scale if login data set and connection correct. Else it 
         shows a popup-hint"""
-        #self.popItUp = True
+        self.popItUp = True
         for val in self.credentialKeys:
             if val not in self.userIN:
                 self.popItUp = False
@@ -92,10 +92,11 @@ class StartScreen(Screen):
     def toggle_state(self):
         if ConfigScreen.popItUp == True:
             self.ids.toggle_button.text = 'Logger'
-            #self.ids.toggle_button.color = 0, 1, 0, 1  # Green text
-        else:
-            #self.ids.toggle_button.text = 'Logger'
             self.ids.toggle_button.color =  0, 1, 0, 1
+            #self.ids.toggle_button.color = 0, 1, 0, 1  # Green text
+        # else:
+        #     #self.ids.toggle_button.text = 'Logger'
+        #     self.ids.toggle_button.color =  0, 1, 0, 1
 
 
 class ScaleApp(App):
@@ -111,11 +112,11 @@ class ScaleApp(App):
         sm.add_widget(config_screen)
         return sm
 
-    def get_acceleration(self):
-        accelerometer.enable()
-        acceleration = accelerometer.acceleration
-        self.label.text = f"Neigung: {acceleration}"
-        print(acceleration)
+    # def get_acceleration(self):
+    #     accelerometer.enable()
+    #     acceleration = accelerometer.acceleration
+    #     self.label.text = f"Neigung: {acceleration}"
+    #     print(acceleration)
 
 
 

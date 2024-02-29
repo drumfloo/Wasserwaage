@@ -1,3 +1,50 @@
+<StartScreen>:
+
+    BoxLayout:
+        size_hint_x: 0.25  
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'  
+
+            ToggleButton:
+                id: toggle_button
+                text: 'Logger'
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.toggle_state()
+                    root.btn_config()
+    
+    BoxLayout:
+        size_hint_x: 0.75 
+
+        ToggleButton:
+            id: space
+            text: 'SPACE'
+
+
+
+    RelativeLayout:
+        
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
+
+            
+            ToggleButton:
+                id: toggle_button
+                text: 'Logger '
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.toggle_state()
+                    root.btn_config()
+                size_hint: (None, None)
+                width: '100dp'
+                height: '48dp'
+
+
+
+
+
 Switch:
                 text: 'Logger'
                 id: toggle_switch
