@@ -8,7 +8,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,mp3
 
 version = 0.1
-requirements = python3,kivy,plyer
+requirements = python3,kivy,plyer,paho-mqtt
 
 orientation = portrait
 fullscreen = 0
