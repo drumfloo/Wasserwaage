@@ -10,7 +10,7 @@ source.include_exts = py,png,jpg,kv,atlas,mp3
 version = 0.1
 requirements = python3,kivy,plyer
 
-orientation = portrait
+orientation = landscape
 fullscreen = 0
 android.archs = arm64-v8a
 p4a.branch = release-2022.12.20
