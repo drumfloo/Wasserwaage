@@ -1,134 +1,111 @@
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
+from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.properties import NumericProperty
+from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.lang.builder import Builder
-from kivy.uix.popup import Popup
-from kivy.core.window import Window
-#from plyer import accelerometer
-from kivy.uix.screenmanager import ScreenManager, Screen
-import json
-import paho.mqtt.client as mqtt
 
-from kivy.uix.popup import Popup
-
-class ConfigScreen(Screen):
-        
-    # def __init__(self, **kwargs):
-    #     super(ConfigScreen, self).__init__(**kwargs)
-    #     self.size_hint = (1, 1)
-    credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
-    userIN = {}
-
-    def login_data_fetcher(self, type, value):
-        """Fetches login data for mqtt connection. Saved as 
-        key:value pairs in a Python dict"""
-        self.userIN[type] = value
-        print(self.userIN) # DEBUG
-
-    
-    def mqtt_handler(self, broker_address, broker_port):
-        # sample-data, replace with acceleration data
-        topic = "test_topic"
-        data = {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3"
-        }
-        client = mqtt.Client()
-        client.connect(broker_address, broker_port)
-        jsonData = json.dumps(data)
-        client.publish(topic, jsonData)
-
-
-    
-    def show_popup(self, infoMsg):
-        popupWindow = Popup(title=infoMsg, size_hint=(None,None),size=(400,200)) 
-        popupWindow.open()
-
-
-# Buttons
-    def btn_back(self):
-        """Navigate back to *sm.current* value defined in ScaleApp class"""
-        print("BACK BUTTON...")# DEBUG
-        sm = self.manager
-        sm.current = 'start'     
-        
-
-    def btn_go(self):
-        """Navigates back to scale if login data set and connection correct."""
-        for credential in self.credentialKeys:
-            if credential not in self.userIN:
-                self.show_popup("Fehlerhafte MQTT Daten")            
-            else:
-                self.btn_checkConnection(self.userIN)
-                sm = self.manager
-                sm.current = 'start'
-        
-
-        #self.mqtt_handler(self.userIN['mqtt_host'], self.userIN['port'], self.userIN['UserName'], self.userIN['password'])
-        #print(self.userIN['mqtt_host'],self.userIN['port'], self.userIN['UserName'], self.userIN['password'] )
-
-    
-    def btn_checkConnection(self, loginData):
-        """Checks if connection credentials set correct and connection can be ethablished"""
-        print("CHECK_CONNECTION...")# DEBUG        
+interface = Builder.load_string('''
+#:import facade plyer.gyroscope
+<GyroscopeInterface>:
+    facade: facade
+    orientation: 'vertical'
+    padding: '20dp'
+    spacing: '10dp'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, .1
+            Button:
+                id: enable_button
+                text: 'Enable Sensor'
+                disabled: False
+                on_release:
+                    root.enable()
+                    disable_button.disabled = not disable_button.disabled
+                    enable_button.disabled = not enable_button.disabled
+            Button:
+                id: disable_button
+                text: 'Disable Sensor'
+                disabled: True
+                on_release:
+                    root.disable()
+                    disable_button.disabled = not disable_button.disabled
+                    enable_button.disabled = not enable_button.disabled
+        BoxLayout:
+            orientation: 'vertical'
+            Label:
+                text: 'Rate of rotation'
+            Label:
+                text: 'including drift compensation'
+            Label:
+                text: '(' + str(root.x_calib) + ','
+            Label:
+                text: str(root.y_calib) + ','
+            Label:
+                text: str(root.z_calib) + ')'
+            Label:
+                text: 'Rate of rotation'
+            Label:
+                text: 'w/o drift compensation'
+            Label:
+                text: '(' + str(root.x_speed) + ','
+            Label:
+                text: str(root.y_speed) + ','
+            Label:
+                text: str(root.z_speed) + ')'
+            Label:
+                text: 'Estimated Drift'
+            Label:
+                text: '(' + str(root.x_drift) + ','
+            Label:
+                text: str(root.y_drift) + ','
+            Label:
+                text: str(root.z_drift) + ')'
+''')
 
 
-class StartScreen(Screen):
-   
-    def btn_config(self):
-        """Switches to configuration panel to set mqtt credentials"""
-        print("BTN_CONFIG...")
-        sm = self.manager
-        sm.current = 'config'
-    
-    
+class GyroscopeInterface(BoxLayout):
+
+    x_calib = NumericProperty(0)
+    y_calib = NumericProperty(0)
+    z_calib = NumericProperty(0)
+    x_speed = NumericProperty(0)
+    y_speed = NumericProperty(0)
+    z_speed = NumericProperty(0)
+    x_drift = NumericProperty(0)
+    y_drift = NumericProperty(0)
+    z_drift = NumericProperty(0)
+
+    facade = ObjectProperty()
+
+    def enable(self):
+        self.facade.enable()
+        Clock.schedule_interval(self.get_rotation, 1 / 20.)
+        Clock.schedule_interval(self.get_rotation_uncalib, 1 / 20.)
+
+    def disable(self):
+        self.facade.disable()
+        Clock.unschedule(self.get_rotation)
+        Clock.unschedule(self.get_rotation_uncalib)
+
+    def get_rotation(self, dt):
+        if self.facade.rotation != (None, None, None):
+            self.x_calib, self.y_calib, self.z_calib = self.facade.rotation
+
+    def get_rotation_uncalib(self, dt):
+        empty = tuple([None for i in range(6)])
+
+        if self.facade.rotation_uncalib != empty:
+            self.x_speed, self.y_speed, self.z_speed, self.x_drift, \
+                self.y_drift, self.z_drift = self.facade.rotation_uncalib
 
 
-
-    def calculate_points(x1, y1, x2, y2, steps=5):
-        dx = x2 - x1
-        dy = y2 - y1
-        dist = sqrt(dx * dx + dy * dy)
-        if dist < steps:
-            return
-        o = []
-        m = dist / steps
-        for i in range(1, int(m)):
-            mi = i / m
-            lastx = x1 + dx * mi
-            lasty = y1 + dy * mi
-            o.extend([lastx, lasty])
-        return o
+class GyroscopeTestApp(App):
+    def build(self):
+        return GyroscopeInterface()
 
 
-
-
-
-class ScaleApp(App):
-    acceleration = 0
-
-    def build(self):        
-        Builder.load_file('StartScreen.kv')
-        Builder.load_file('ConfigScreen.kv')
-        sm = ScreenManager()
-        start_screen = StartScreen(name='start')
-        config_screen = ConfigScreen(name='config')
-        sm.add_widget(start_screen)
-        sm.add_widget(config_screen)
-        return sm
-
-    # def get_acceleration(self):
-    #     accelerometer.enable()
-    #     acceleration = accelerometer.acceleration
-    #     self.label.text = f"Neigung: {acceleration}"
-    #     print(acceleration)
-
-
-
-if __name__ == '__main__':
-    ScaleApp().run()
-
-
-
-
+if __name__ == "__main__":
+    GyroscopeTestApp().run()
