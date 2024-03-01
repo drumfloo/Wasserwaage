@@ -7,19 +7,23 @@ from kivy.uix.popup import Popup
 from kivy.core.window import Window
 #from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
-import json
+import json, time
 import paho.mqtt.client as mqtt
-from mqtt_connector import MQTTconnector
+from mqtt.mqtt_connector import MQTTconnector
+
 
 
 class ConfigScreen(Screen):
         
-    # def __init__(self, **kwargs):
-    #     super(ConfigScreen, self).__init__(**kwargs)
-    #     self.size_hint = (1, 1)
+    def __init__(self, **kwargs):
+         super(ConfigScreen, self).__init__(**kwargs)
+         self.size_hint = (1, 1)
+         self.mq = MQTTconnector()
+
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
     popItUp = False
+    
 
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 
@@ -36,10 +40,7 @@ class ConfigScreen(Screen):
             "key2": "value2",
             "key3": "value3"
         }
-        client = mqtt.Client()
-        client.connect(broker_address, broker_port)
-        jsonData = json.dumps(data)
-        client.publish(topic, jsonData)
+        
 
 
 # Buttons
@@ -80,7 +81,26 @@ class ConfigScreen(Screen):
     
     def btn_checkConnection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
-        print("CHECK_CONNECTION...")# DEBUG        
+        self.mq.build_connection()
+        
+        self.save_config()
+        
+        print("CHECK_CONNECTION...")# DEBUG      
+
+
+    def save_config(self):
+        with open("mqtt/mqtt_config.json", "r") as file:
+            dict_config = json.load(file)
+
+        dict_config["host"] = self.userIN["mqtt_host"]
+        dict_config["port"] = self.userIN["port"]
+        dict_config["topic"] = self.userIN["fullTopic"]
+        dict_config["username"] = self.userIN["userName"]
+        dict_config["password"] = self.userIN["password"]
+
+        with open("mqtt/mqtt_config.json", "w") as outfile: 
+            json.dump(dict_config, outfile)
+        
 
 
 class StartScreen(Screen):

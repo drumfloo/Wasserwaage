@@ -1,0 +1,8 @@
+{
+    "broker": "broker.hivemq.com",
+    "port": "",
+    "host": "",
+    "topic": "",
+    "username": "",
+    "password": ""
+}
