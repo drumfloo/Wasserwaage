@@ -1,3 +1,4 @@
+from math import sqrt
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -8,6 +9,7 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 import json
 import paho.mqtt.client as mqtt
+from mqtt_connector import MQTTconnector
 
 
 class ConfigScreen(Screen):
@@ -140,6 +142,9 @@ class ScaleApp(App):
 
 if __name__ == '__main__':
     ScaleApp().run()
+    mq = MQTTconnector()
+    mq.build_connection()
+    mq.send_msg("Sende eine Nachricht")
 
 
 
