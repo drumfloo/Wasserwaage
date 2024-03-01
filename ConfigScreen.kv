@@ -1,11 +1,14 @@
 <ConfigScreen>:
     ScrollView:
         do_scroll_x: False
-        BoxLayout:
+
+        
+        BoxLayout:            
             do_rotation: False
             orientation: 'vertical'
             padding: 10
-            spacing: 15
+            spacing: 15          
+
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -116,3 +119,5 @@
                         root.btn_back()
                         root.manager.transition.direction = 'left'
                     size_hint_x: 0.4
+            
+            
