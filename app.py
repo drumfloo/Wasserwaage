@@ -8,7 +8,6 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 import json
 import paho.mqtt.client as mqtt
-
 from kivy.uix.popup import Popup
 
 class ConfigScreen(Screen):
@@ -39,11 +38,12 @@ class ConfigScreen(Screen):
         jsonData = json.dumps(data)
         client.publish(topic, jsonData)
 
-
-    
     def show_popup(self, infoMsg):
-        popupWindow = Popup(title=infoMsg, size_hint=(None,None),size=(400,200)) 
+        #content = Button(text='Close')
+        popupWindow = Popup(title=infoMsg, size_hint=(None,None),size=(400,200),auto_dismiss=True) 
         popupWindow.open()
+        
+       # popupWindow.dismiss()
 
 
 # Buttons
@@ -74,6 +74,7 @@ class ConfigScreen(Screen):
         print("CHECK_CONNECTION...")# DEBUG        
 
 
+
 class StartScreen(Screen):
    
     def btn_config(self):
@@ -82,27 +83,6 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
     
-    
-
-
-
-    def calculate_points(x1, y1, x2, y2, steps=5):
-        dx = x2 - x1
-        dy = y2 - y1
-        dist = sqrt(dx * dx + dy * dy)
-        if dist < steps:
-            return
-        o = []
-        m = dist / steps
-        for i in range(1, int(m)):
-            mi = i / m
-            lastx = x1 + dx * mi
-            lasty = y1 + dy * mi
-            o.extend([lastx, lasty])
-        return o
-
-
-
 
 
 class ScaleApp(App):
