@@ -68,34 +68,21 @@ class ConfigScreen(Screen):
         
 
     def btn_go(self):
-        """Navigates back to scale if login data set and connection correct. Else it 
-        shows a popup-hint"""
-        self.popItUp = True
-        for val in self.credentialKeys:
-            if val not in self.userIN:
-                self.popItUp = False
-                break
-
-        if not self.popItUp:
-            popup = Popup(
-            title="Something went wrong... there are wrong or missing informations!",
-            #content='Cant establish a working connection...',
-            size_hint=(None, None),
-            size=(250, 100), #size=(Window.width / 3, Window.height / 3),
-            auto_dismiss=True,
-            )
-            # on_press=popup.dismiss
-            popup.open()
-        else:
-            # start giving login credentials to mqtt an switch back to scaler-panel
-            sm = self.manager
-            sm.current = 'start'
+        """Navigates back to scale if login data set and connection correct."""
+        for credential in self.credentialKeys:
+            if credential not in self.userIN:
+                self.show_popup("Fehlerhafte MQTT Daten")            
+            else:
+                self.btn_checkConnection(self.userIN)
+                sm = self.manager
+                sm.current = 'start'
+        
 
         #self.mqtt_handler(self.userIN['mqtt_host'], self.userIN['port'], self.userIN['UserName'], self.userIN['password'])
         #print(self.userIN['mqtt_host'],self.userIN['port'], self.userIN['UserName'], self.userIN['password'] )
 
     
-    def btn_checkConnection(self):
+    def btn_checkConnection(self, loginData):
         """Checks if connection credentials set correct and connection can be ethablished"""
         self.mq.build_connection()
         
@@ -128,32 +115,6 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
     
-    def toggle_state(self):
-        if ConfigScreen.popItUp == True:
-            self.ids.toggle_button.text = 'Logger'
-            self.ids.toggle_button.color =  0, 1, 0, 1
-            #self.ids.toggle_button.color = 0, 1, 0, 1  # Green text
-        # else:
-        #     #self.ids.toggle_button.text = 'Logger'
-        #     self.ids.toggle_button.color =  0, 1, 0, 1
-
-    def calculate_points(x1, y1, x2, y2, steps=5):
-        dx = x2 - x1
-        dy = y2 - y1
-        dist = sqrt(dx * dx + dy * dy)
-        if dist < steps:
-            return
-        o = []
-        m = dist / steps
-        for i in range(1, int(m)):
-            mi = i / m
-            lastx = x1 + dx * mi
-            lasty = y1 + dy * mi
-            o.extend([lastx, lasty])
-        return o
-
-
-
 
 
 class ScaleApp(App):

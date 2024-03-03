@@ -9,7 +9,7 @@ TODO:
     
     - Umsetzung der Darstellung der Libelle (siehe TEST_FILE.py)
     
-    - MQTT-Integrieren und Daten des Dicts für Login abholen
+    - MQTT Mess-Daten an broker senden
     
     - Optische Verschönerungen falls noch Zeit
     

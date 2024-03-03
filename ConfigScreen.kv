@@ -1,10 +1,14 @@
 <ConfigScreen>:
     ScrollView:
         do_scroll_x: False
-        BoxLayout:
+
+        
+        BoxLayout:            
+            do_rotation: False
             orientation: 'vertical'
             padding: 10
-            spacing: 15
+            spacing: 15          
+
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -83,12 +87,16 @@
                     text: "Select Interval"
                     values: ["2sec", "5sec", "10sec"]
                     on_text: root.login_data_fetcher("intervals", self.text)
+                    Color:
+                        rgb: (.5, .5, .5)
 
                 Spinner:
                     id: dimensions_spinner
                     text: "Select Dimension"
                     values: ['1D', '2D', '3D']
                     on_text: root.login_data_fetcher("dimensions", self.text)
+                    Color:
+                        rgb: (.5, .5, .5)
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -115,3 +123,4 @@
                         root.btn_back()
                         root.manager.transition.direction = 'left'
                     size_hint_x: 0.4
+            

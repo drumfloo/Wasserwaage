@@ -1,6 +1,7 @@
 <StartScreen>:
 
     BoxLayout:
+        do_rotation: False
         BoxLayout:
             size_hint_x: 0.75 
 
@@ -14,13 +15,13 @@
                 anchor_x: 'right'
                 anchor_y: 'top'  
 
-                ToggleButton:
+                Button:
                     id: toggle_button
                     text: 'Logger'
                     size_hint: (1, None)
+
                     on_press: 
                         root.manager.transition.direction = 'right'
-                        root.toggle_state()
                         root.btn_config()
 
         
