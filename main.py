@@ -25,6 +25,22 @@ class ConfigScreen(Screen):
     popItUp = False
     
 
+    def on_pre_enter(self, *args):
+        self.fill_fields()
+
+    def fill_fields(self, config_path = "mqtt/mqtt_config.json"):
+        print("fill")
+        with open(config_path, "r") as file:
+            dict_config = json.load(file)
+        
+        self.ids.mqtt_host_input.text = dict_config["host"]
+        self.ids.port_input.text = dict_config["port"]
+        self.ids.full_topic_input.text = dict_config["topic"]
+        self.ids.username_input.text = dict_config["username"]
+        self.ids.password_input.text = dict_config["password"]
+        
+
+
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 
         key:value pairs in a Python dict"""
@@ -84,6 +100,7 @@ class ConfigScreen(Screen):
         self.mq.build_connection()
         
         self.save_config()
+        self.mq.send_msg("input")
         
         print("CHECK_CONNECTION...")# DEBUG      
 
