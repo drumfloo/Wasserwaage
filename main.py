@@ -1,3 +1,4 @@
+from math import sqrt
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -6,17 +7,39 @@ from kivy.uix.popup import Popup
 from kivy.core.window import Window
 #from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
-import json
+import json, time
 import paho.mqtt.client as mqtt
-from kivy.uix.popup import Popup
+from mqtt.mqtt_connector import MQTTconnector
+
+
 
 class ConfigScreen(Screen):
         
-    # def __init__(self, **kwargs):
-    #     super(ConfigScreen, self).__init__(**kwargs)
-    #     self.size_hint = (1, 1)
+    def __init__(self, **kwargs):
+         super(ConfigScreen, self).__init__(**kwargs)
+         self.size_hint = (1, 1)
+         self.mq = MQTTconnector()
+
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
+    popItUp = False
+    
+
+    def on_pre_enter(self, *args):
+        self.fill_fields()
+
+    def fill_fields(self, config_path = "mqtt/mqtt_config.json"):
+        print("fill")
+        with open(config_path, "r") as file:
+            dict_config = json.load(file)
+        
+        self.ids.mqtt_host_input.text = dict_config["host"]
+        self.ids.port_input.text = dict_config["port"]
+        self.ids.full_topic_input.text = dict_config["topic"]
+        self.ids.username_input.text = dict_config["username"]
+        self.ids.password_input.text = dict_config["password"]
+        
+
 
     def login_data_fetcher(self, type, value):
         """Fetches login data for mqtt connection. Saved as 
@@ -33,17 +56,7 @@ class ConfigScreen(Screen):
             "key2": "value2",
             "key3": "value3"
         }
-        client = mqtt.Client()
-        client.connect(broker_address, broker_port)
-        jsonData = json.dumps(data)
-        client.publish(topic, jsonData)
-
-    def show_popup(self, infoMsg):
-        #content = Button(text='Close')
-        popupWindow = Popup(title=infoMsg, size_hint=(None,None),size=(400,200),auto_dismiss=True) 
-        popupWindow.open()
         
-       # popupWindow.dismiss()
 
 
 # Buttons
@@ -71,8 +84,27 @@ class ConfigScreen(Screen):
     
     def btn_checkConnection(self, loginData):
         """Checks if connection credentials set correct and connection can be ethablished"""
-        print("CHECK_CONNECTION...")# DEBUG        
+        self.mq.build_connection()
+        
+        self.save_config()
+        self.mq.send_msg("input")
+        
+        print("CHECK_CONNECTION...")# DEBUG      
 
+
+    def save_config(self):
+        with open("mqtt/mqtt_config.json", "r") as file:
+            dict_config = json.load(file)
+
+        dict_config["host"] = self.userIN["mqtt_host"]
+        dict_config["port"] = self.userIN["port"]
+        dict_config["topic"] = self.userIN["fullTopic"]
+        dict_config["username"] = self.userIN["userName"]
+        dict_config["password"] = self.userIN["password"]
+
+        with open("mqtt/mqtt_config.json", "w") as outfile: 
+            json.dump(dict_config, outfile)
+        
 
 
 class StartScreen(Screen):
@@ -108,6 +140,9 @@ class ScaleApp(App):
 
 if __name__ == '__main__':
     ScaleApp().run()
+    mq = MQTTconnector()
+    mq.build_connection()
+    mq.send_msg("Sende eine Nachricht")
 
 
 
