@@ -1,0 +1,117 @@
+<ConfigScreen>:
+    ScrollView:
+        do_scroll_x: False
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10
+            spacing: 15
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(50)
+
+                Label:
+                    text: 'MQTT-Host'
+                    size_hint_x: 0.2
+
+                TextInput:
+                    id: mqtt_host_input
+                    size_hint_x: 0.4
+                    multiline: False
+                    on_text: root.login_data_fetcher("mqtt_host", self.text)
+                   
+                Label:
+                    text: 'Port'
+                    size_hint_x: 0.1
+
+                TextInput:
+                    id: port_input
+                    size_hint_x: 0.3
+                    multiline: False
+                    on_text: root.login_data_fetcher("port", self.text)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(50)
+
+                Label:
+                    text: "User Name"
+                    size_hint_x: 0.2
+
+                TextInput:
+                    id: username_input
+                    size_hint_x: 0.4
+                    multiline: False
+                    on_text: root.login_data_fetcher("userName", self.text)
+
+                Label:
+                    text: 'Password'
+                    size_hint_x: 0.1
+
+                TextInput:
+                    id: password_input
+                    size_hint_x: 0.3
+                    multiline: False
+                    password: True
+                    on_text: root.login_data_fetcher("password", self.text)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(50)
+
+                Label:
+                    text: "Full Topic"
+                    size_hint_x: 0.2
+
+                TextInput:
+                    id: full_topic_input
+                    size_hint_x: 0.8
+                    multiline: False
+                    on_text: root.login_data_fetcher("fullTopic", self.text)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(50)
+
+             
+                Spinner:
+                    id: intervals_spinner
+                    text: "Select Interval"
+                    values: ["2sec", "5sec", "10sec"]
+                    on_text: root.login_data_fetcher("intervals", self.text)
+
+                Spinner:
+                    id: dimensions_spinner
+                    text: "Select Dimension"
+                    values: ['1D', '2D', '3D']
+                    on_text: root.login_data_fetcher("dimensions", self.text)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(50)
+
+                Button:
+                    text: "Check Connection"
+                    on_press: root.btn_checkConnection()
+                    size_hint_x: 0.3
+
+                Button:
+                    text: 'Go'
+                    size_hint_x: 0.3
+                    on_press:                  
+                        root.btn_go()
+                        root.manager.transition.direction = 'left'
+                    
+                    
+
+                Button:
+                    text: 'Back'
+                    on_press: 
+                        root.btn_back()
+                        root.manager.transition.direction = 'left'
+                    size_hint_x: 0.4
