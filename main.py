@@ -70,7 +70,7 @@ class ConfigScreen(Screen):
             title="Something went wrong... there are wrong or missing informations!",
             #content='Cant establish a working connection...',
             size_hint=(None, None),
-            size=(250, 100), #size=(Window.width / 3, Window.height / 3),
+            size=(250, 100),
             auto_dismiss=True,
             )
             # on_press=popup.dismiss
@@ -80,8 +80,6 @@ class ConfigScreen(Screen):
             sm = self.manager
             sm.current = 'start'
 
-        #self.mqtt_handler(self.userIN['mqtt_host'], self.userIN['port'], self.userIN['UserName'], self.userIN['password'])
-        #print(self.userIN['mqtt_host'],self.userIN['port'], self.userIN['UserName'], self.userIN['password'] )
 
     
     def btn_checkConnection(self):
