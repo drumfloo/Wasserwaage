@@ -18,7 +18,7 @@ class ConfigScreen(Screen):
     def __init__(self, **kwargs):
          super(ConfigScreen, self).__init__(**kwargs)
          self.size_hint = (1, 1)
-         self.mq = MQTTconnector()
+         #self.mq = MQTTconnector()
 
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
@@ -45,24 +45,13 @@ class ConfigScreen(Screen):
         """Fetches login data for mqtt connection. Saved as 
         key:value pairs in a Python dict"""
         self.userIN[type] = value
-        print(self.userIN) # DEBUG
-
-    
-    def mqtt_handler(self, broker_address, broker_port):
-        # sample-data, replace with acceleration data
-        topic = "test_topic"
-        data = {
-            "key1": "value1",
-            "key2": "value2",
-            "key3": "value3"
-        }
+        
         
 
 
 # Buttons
     def btn_back(self):
         """Navigate back to *sm.current* value defined in ScaleApp class"""
-        print("BACK BUTTON...")# DEBUG
         sm = self.manager
         sm.current = 'start'     
         
@@ -97,13 +86,27 @@ class ConfigScreen(Screen):
     
     def btn_checkConnection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
-        self.mq.build_connection()
-        
-        self.save_config()
-        self.mq.send_msg("input")
-        
-        print("CHECK_CONNECTION...")# DEBUG      
+        try:
+            self.mq = MQTTconnector(host=self.userIN['mqtt_host'],port=int(self.userIN['port']),topic=self.userIN['fullTopic'])
+            self.mq.build_connection()
+            
+            self.save_config()
+            self.notification("Connected")
 
+        except Exception as e:
+            print(type(str(e)))
+            self.notification(str(e))
+
+    def notification(self, text: str):
+            popup = Popup(
+            title=text,
+            #content='Cant establish a working connection...',
+            size_hint=(None, None),
+            size=(250, 100), #size=(Window.width / 3, Window.height / 3),
+            auto_dismiss=True,
+            )
+            # on_press=popup.dismiss
+            popup.open()
 
     def save_config(self):
         with open("mqtt/mqtt_config.json", "r") as file:

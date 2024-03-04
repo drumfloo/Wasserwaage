@@ -3,8 +3,8 @@ import time
 import uuid
 
 class MQTTconnector:
-    def __init__(self, broker="broker.hivemq.com", topic = "gsog/test/waage", port=1883) -> None:
-        self.broker = broker
+    def __init__(self, host="broker.hivemq.com", topic = "gsog/test/waage", port=1883) -> None:
+        self.host = host
         self.topic = topic
         self.port = port
         self.client_id = str(uuid.uuid1())
@@ -12,7 +12,7 @@ class MQTTconnector:
 
     def build_connection(self):
         self.mqtt_client= paho.Client(paho.CallbackAPIVersion.VERSION2 ,self.client_id)
-        self.mqtt_client.connect(self.broker,self.port)
+        self.mqtt_client.connect(self.host,self.port)
 
     def send_msg(self, msg):
        status,_ = self.mqtt_client.publish(self.topic, msg, qos=0)
