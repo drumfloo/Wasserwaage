@@ -66,15 +66,16 @@ class ConfigScreen(Screen):
                 break
 
         if not self.popItUp:
-            popup = Popup(
-            title="Something went wrong... there are wrong or missing informations!",
-            #content='Cant establish a working connection...',
-            size_hint=(None, None),
-            size=(250, 100),
-            auto_dismiss=True,
-            )
+            self.notification("Something went wrong... there are wrong or missing informations!")
+            # popup = Popup(
+            # title="Something went wrong... there are wrong or missing informations!",
+            # #content='Cant establish a working connection...',
+            # size_hint=(None, None),
+            # size=(250, 100),
+            # auto_dismiss=True,
+            # )
             # on_press=popup.dismiss
-            popup.open()
+            # popup.open()
         else:
             # start giving login credentials to mqtt an switch back to scaler-panel
             sm = self.manager
