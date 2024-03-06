@@ -1,5 +1,4 @@
 import paho.mqtt.client as paho
-import time
 import uuid
 
 class MQTTconnector:

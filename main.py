@@ -1,29 +1,21 @@
-from math import sqrt
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
 from kivy.uix.popup import Popup
-from kivy.core.window import Window
-#from plyer import accelerometer
 from kivy.uix.screenmanager import ScreenManager, Screen
-import json, time
-import paho.mqtt.client as mqtt
+import json
 from mqtt.mqtt_connector import MQTTconnector
 
 
 
 class ConfigScreen(Screen):
         
+    credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
+    userIN = {}
+
     def __init__(self, **kwargs):
          super(ConfigScreen, self).__init__(**kwargs)
          self.size_hint = (1, 1)
-         #self.mq = MQTTconnector()
-
-    credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
-    userIN = {}
-    popItUp = False
-    
+         #self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
         self.fill_fields()
@@ -49,7 +41,7 @@ class ConfigScreen(Screen):
         
 
 
-# Buttons
+    # Buttons
     def btn_back(self):
         """Navigate back to *sm.current* value defined in ScaleApp class"""
         sm = self.manager
@@ -57,29 +49,13 @@ class ConfigScreen(Screen):
         
 
     def btn_go(self):
-        """Navigates back to scale if login data set and connection correct. Else it 
-        shows a popup-hint"""
-        self.popItUp = True
-        for val in self.credentialKeys:
-            if val not in self.userIN:
-                self.popItUp = False
-                break
-
-        if not self.popItUp:
-            self.notification("Something went wrong... there are wrong or missing informations!")
-            # popup = Popup(
-            # title="Something went wrong... there are wrong or missing informations!",
-            # #content='Cant establish a working connection...',
-            # size_hint=(None, None),
-            # size=(250, 100),
-            # auto_dismiss=True,
-            # )
-            # on_press=popup.dismiss
-            # popup.open()
-        else:
-            # start giving login credentials to mqtt an switch back to scaler-panel
-            sm = self.manager
-            sm.current = 'start'
+        """Checks necessary login credentials"""
+        for value in self.credentialKeys:
+            if value not in self.userIN:
+                self.notification("Error - connection not set through missing informations")
+            
+        sm = self.manager
+        sm.current = 'start'
 
 
     
@@ -94,18 +70,8 @@ class ConfigScreen(Screen):
 
         except Exception as e:
             print(type(str(e)))
-            self.notification(str(e))
+            self.notification(str(e) + " Connection not ready")
 
-    def notification(self, text: str):
-            popup = Popup(
-            title=text,
-            #content='Cant establish a working connection...',
-            size_hint=(None, None),
-            size=(250, 100), #size=(Window.width / 3, Window.height / 3),
-            auto_dismiss=True,
-            )
-            # on_press=popup.dismiss
-            popup.open()
 
     def save_config(self):
         with open("mqtt/mqtt_config.json", "r") as file:
@@ -119,48 +85,34 @@ class ConfigScreen(Screen):
 
         with open("mqtt/mqtt_config.json", "w") as outfile: 
             json.dump(dict_config, outfile)
+    
+    # Notification
+    def notification(self, msg: str):
+        """Notification function to show popup. *msg* means the message to show in the popup"""
+        popup = Popup(
+        title = msg,
+        #content='Cant establish a working connection...',
+        size_hint = (None, None),
+        size = (250, 100), #size=(Window.width / 3, Window.height / 3),
+        auto_dismiss = True,
+        )
+        # on_press=popup.dismiss
+        popup.open()
         
 
 
 class StartScreen(Screen):
    
     def btn_config(self):
-        """Switches to configuration panel to set mqtt credentials"""
-        print("BTN_CONFIG...")
+        """Switches to configuration panel"""
         sm = self.manager
         sm.current = 'config'
     
-    def toggle_state(self):
-        if ConfigScreen.popItUp == True:
-            self.ids.toggle_button.text = 'Logger'
-            self.ids.toggle_button.color =  0, 1, 0, 1
-            #self.ids.toggle_button.color = 0, 1, 0, 1  # Green text
-        # else:
-        #     #self.ids.toggle_button.text = 'Logger'
-        #     self.ids.toggle_button.color =  0, 1, 0, 1
 
-    def calculate_points(x1, y1, x2, y2, steps=5):
-        dx = x2 - x1
-        dy = y2 - y1
-        dist = sqrt(dx * dx + dy * dy)
-        if dist < steps:
-            return
-        o = []
-        m = dist / steps
-        for i in range(1, int(m)):
-            mi = i / m
-            lastx = x1 + dx * mi
-            lasty = y1 + dy * mi
-            o.extend([lastx, lasty])
-        return o
-
-
-
-
+ 
 
 class ScaleApp(App):
-    acceleration = 0
-
+    
     def build(self):        
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
@@ -171,12 +123,7 @@ class ScaleApp(App):
         sm.add_widget(config_screen)
         return sm
 
-    # def get_acceleration(self):
-    #     accelerometer.enable()
-    #     acceleration = accelerometer.acceleration
-    #     self.label.text = f"Neigung: {acceleration}"
-    #     print(acceleration)
-
+    
 
 
 if __name__ == '__main__':
