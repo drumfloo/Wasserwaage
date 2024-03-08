@@ -18,21 +18,22 @@
                 pos_hint: {'center_x': root.xval, 'center_y': 0.5}
 
 <StartScreen>:
-    Libelle:
-        size_hint_x: 0.75
     BoxLayout:
-        size_hint_x: 0.25          
-        AnchorLayout:
-            anchor_x: 'right'
-            anchor_y: 'top' 
-            Button:
-                id: toggle_button
-                text: 'Logger'
-                size_hint: (1, None)
+        Libelle:
+            size_hint_x: 0.75
+        BoxLayout:
+            size_hint_x: 0.25          
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'top' 
+                Button:
+                    id: toggle_button
+                    text: 'Logger'
+                    size_hint: (1, None)
 
-                on_press: 
-                    root.manager.transition.direction = 'right'
-                    root.btn_config()
+                    on_press: 
+                        root.manager.transition.direction = 'right'
+                        root.btn_config()
     
         
 
