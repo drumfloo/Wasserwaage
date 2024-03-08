@@ -6,7 +6,7 @@ from kivy.core.window import Window
 import random
 
 APP_KV = """
-<CanvasTest>:
+<Libelle>:
     canvas:       
         Color:
             rgba: .1, 1, .1, .9
@@ -19,7 +19,7 @@ APP_KV = """
 
 #https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html mal ansehen
 
-class CanvasTest(BoxLayout):    
+class Libelle(BoxLayout):    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -59,7 +59,7 @@ class CanvasTest(BoxLayout):
 class MainApp(App):
     def build(self):
         self.root = Builder.load_string(APP_KV)
-        return CanvasTest()
+        return Libelle()
 
 if __name__ == '__main__':
     MainApp().run()
