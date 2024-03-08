@@ -107,6 +107,8 @@ class StartScreen(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.xval = NumericProperty(0.0)
+        self.direction = BooleanProperty(False)
 
     
     def btn_config(self):
@@ -153,7 +155,6 @@ class StartScreen(Screen):
     
 
 class Libelle(Screen):
-
     xval = NumericProperty(0.0)
     direction = BooleanProperty(False)
     def __init__(self, **kwargs):
@@ -162,7 +163,6 @@ class Libelle(Screen):
     def update_value(self, dt):
         if(self.direction==False):
             self.xval += 0.01
-            print(self.xval)
             if(self.xval>=1.0):
                 print("Test")
                 self.direction=True
