@@ -6,7 +6,11 @@ import json
 from mqtt.mqtt_connector import MQTTconnector
 from kivy.clock import Clock
 from kivy.properties import NumericProperty,BooleanProperty
+import json
 
+
+with open("synt_acc_data.json", "r") as file:
+    test_data = json.loads(file.read())['data']
 
 
 class ConfigScreen(Screen):
@@ -101,8 +105,6 @@ class ConfigScreen(Screen):
         # on_press=popup.dismiss
         popup.open()
         
-
-
 class StartScreen(Screen):
 
     def __init__(self, **kw):
@@ -115,11 +117,6 @@ class StartScreen(Screen):
         """Switches to configuration panel"""
         sm = self.manager
         sm.current = 'config'
-    
-        
-    def label_updater(self, data):
-        
-        self.ids.lb1.text += "1"
     
     
 
@@ -162,10 +159,19 @@ class StartScreen(Screen):
 class Libelle(Screen):
     xval = NumericProperty(0.0)
     direction = BooleanProperty(False)
+    test = BooleanProperty(True)
+    
     def __init__(self, **kwargs):
         super(Libelle, self).__init__(**kwargs)
         Clock.schedule_interval(self.update_value, 0.016)
+        print(test_data)
+
     def update_value(self, dt):
+        if self.test:
+            self.run_test()
+            return             
+
+    def run_test(self):
         if(self.direction==False):
             self.xval += 0.01
             if(self.xval>=1.0):
@@ -174,47 +180,10 @@ class Libelle(Screen):
         else:
             self.xval -= 0.01
             if(self.xval<=0.0):
-                self.direction=False    
-#     def __init__(self, **kwargs):
-#         super().__init__(**kwargs)
-
-#         self.pos_x = (self.width-100)/2
-#         self.pos_y = (self.height-100)/2
-#         Clock.schedule_interval(self.test_pos, 0.01)
-        
-#     def test_pos(self, *args): 
-#         pos_x_target_test = [700, 1]
-#         pos_x_target = pos_x_target_test[0] if round(self.pos_x, 0) == round(pos_x_target_test[1], 0) else pos_x_target_test[1]
-#         self.pos_y = (self.height-100)/2        
-#         pos_x = self.get_x_pos(pos_x_target)
-#         pos_y = self.pos_y
-
-#         print(self.canvas)
-
-#         self.canvas.get_group('libelle')[0].pos = pos_x, pos_y
+                self.direction=False   
 
 
-#     def get_x_pos(self, pos_x_target):       
-#         self.pos_x = (self.width-100)/2 if self.pos_x < 1 else self.pos_x
-#         if round(self.pos_x, 0) == round(pos_x_target, 0):    
-#             print('equal') 
-#             return self.pos_x
-#         elif self.pos_x < pos_x_target: 
-#             print('to right')           
-#             # self.pos_x +=  (pos_x_target/self.pos_x)*2
-#             self.pos_x += 10
-#         elif self.pos_x > pos_x_target and self.pos_x > 0:    
-#             print('to left')   
-#             self.pos_x -= 10
-#             # self.pos_x -=  ((self.width-pos_x_target)/(self.width-self.pos_x))*2
-#         return self.pos_x
-
-
-        #self.canvas.get_group('libelle')[0].pos = random.randrange(1, Window.width - 200), random.randrange(1, Window.height - 100)
-        
-
-class ScaleApp(App):
-    
+class ScaleApp(App):   
     def build(self):        
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
@@ -227,17 +196,9 @@ class ScaleApp(App):
         sm.add_widget(config_screen)
         sm.add_widget(libelle)
         return sm
-
     
-
-
 if __name__ == '__main__':
     ScaleApp().run()
     mq = MQTTconnector()
     mq.build_connection()
     mq.send_msg("Sende eine Nachricht")
-
-
-
-
-
