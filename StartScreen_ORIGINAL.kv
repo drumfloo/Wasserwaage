@@ -3,13 +3,11 @@
     BoxLayout:
         do_rotation: False
         BoxLayout:
-            canvas:       
-                Color:
-                    rgba: .1, 1, .1, .9
-                Ellipse:
-                    group: 'libelle'
-                    size: 100, 100
-                    pos: (self.width-100)/2, (self.height-100)/2
+            size_hint_x: 0.75 
+
+            ToggleButton:
+                id: space
+                text: 'SPACE'
                 
         BoxLayout:
             size_hint_x: 0.25  
