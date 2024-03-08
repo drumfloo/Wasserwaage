@@ -4,6 +4,7 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 import random
+import json
 
 APP_KV = """
 <Libelle>:
@@ -16,12 +17,17 @@ APP_KV = """
             pos: (self.width-100)/2, (self.height-100)/2
 """
 
+with open("synt_acc_data.json", "r") as file:
+    data = json.loads(file.read())["data"]
+
 
 #https://kivy.org/doc/stable/api-kivy.uix.floatlayout.html mal ansehen
 
 class Libelle(BoxLayout):    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        print(data)
 
         self.pos_x = (self.width-100)/2
         self.pos_y = (self.height-100)/2
@@ -30,10 +36,26 @@ class Libelle(BoxLayout):
     def test_pos(self, *args): 
         pos_x_target_test = [700, 1]
         pos_x_target = pos_x_target_test[0] if round(self.pos_x, 0) == round(pos_x_target_test[1], 0) else pos_x_target_test[1]
-        self.pos_y = (self.height-100)/2        
-        pos_x = self.get_x_pos(pos_x_target)
+        self.pos_y = (self.height-100)/2  
+        self.pos_x = (self.width-100)/2      
+        # pos_x = self.get_pos_x(pos_x_target)
+        pos_x = self.pos_x
         pos_y = self.pos_y
         self.canvas.get_group('libelle')[0].pos = pos_x, pos_y
+
+
+
+    def __getCenterPoints():
+        pass
+
+    def get_pos_x(self, x, start_point = -1):
+        pass
+
+    def get_pos_y(self, y, start_point = -1):
+        pass
+
+    def get_pos_z(self, z, start_point = -1):
+        pass
 
 
     def get_x_pos(self, pos_x_target):       

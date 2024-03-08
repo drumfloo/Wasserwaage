@@ -1,5 +1,5 @@
 { 
-    "description": "das Telefon liegt flach auf dem Tisch, und beginnt langsam, etwas zur Seite geneigt zu werden; dann fällt es wieder zurück in seine Ursprungsposition",
+    "description": "das Telefon liegt flach auf dem Tisch, und beginnt langsam, etwas zur Seite geneigt zu werden; dann fällt es wieder zurück in seine Ursprungsposition, In diesem Array stellen negative x-, y-Werte eine Neigung nach links unten dar, während positive z-Werte eine Aufwärtsneigung zeigen.",
     "data": [
         [-0.02, -0.02, -0.98],
         [-0.03, -0.02, -0.98],
