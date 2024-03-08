@@ -116,6 +116,11 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
     
+        
+    def label_updater(self, data):
+        
+        self.ids.lb1.text += "1"
+    
     
 
     # def __init__(self, **kwargs):
