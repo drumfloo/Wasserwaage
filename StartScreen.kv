@@ -1,30 +1,38 @@
-<StartScreen>:
-    
+<CircleMAX@BoxLayout>:
+    size: 100, 100
+    canvas.before:
+        Color:
+            rgba:1,1,1,1
+        Ellipse:
+            pos: self.pos     # Position of the circle (same as the widget's position)
+
+            size: 100, 100
+                    
+<Libelle>:
     BoxLayout:
-        do_rotation: False
-        BoxLayout:
-            canvas:       
-                Color:
-                    rgba: .1, 1, .1, .9
-                Ellipse:
-                    group: 'libelle'
-                    size: 100, 100
-                    pos: (self.width-100)/2, (self.height-100)/2
-                
-        BoxLayout:
-            size_hint_x: 0.25  
-            AnchorLayout:
-                anchor_x: 'right'
-                anchor_y: 'top'  
-
-                Button:
-                    id: toggle_button
-                    text: 'Logger'
-                    size_hint: (1, None)
-
-                    on_press: 
-                        root.manager.transition.direction = 'right'
-                        root.btn_config()
-
         
-    
+        orientation:"vertical"
+        FloatLayout:
+            size_hint_y:0.9
+            CircleMAX:
+                size_hint: None, None
+                pos_hint: {'center_x': root.xval, 'center_y': 0.5}
+
+<StartScreen>:
+    BoxLayout:
+        size_hint_x: 0.25  
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'  
+
+            Button:
+                id: toggle_button
+                text: 'Logger'
+                size_hint: (1, None)
+
+                on_press: 
+                    root.manager.transition.direction = 'right'
+                    root.btn_config()
+
+
+  

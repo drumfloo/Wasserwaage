@@ -1,7 +1,3 @@
-<MyLabel@Label>:
-    size_hint_y: None
-    height: dp(56)
-    text: str(root.index)
 
 <CircleMAX@BoxLayout>:
     size: 100, 100
@@ -16,19 +12,11 @@
 <MyWidget>:
     BoxLayout:
         
-        orientation:"horizontal"
+        orientation:"vertical"
         FloatLayout:
             size_hint_y:0.9
             CircleMAX:
                 size_hint: None, None
                 pos_hint: {'center_x': root.xval, 'center_y': 0.5}
-        BoxLayout:
-            size_hint_y:0.3
-            Button:
-                text:"left"
-                on_press:root.xval = root.xval + 0.1
-            Button:
-                text:"right"
-                on_press:root.xval = root.xval - 0.1
-
+        
 
