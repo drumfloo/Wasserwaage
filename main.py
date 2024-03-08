@@ -102,7 +102,6 @@ class ConfigScreen(Screen):
 
 
 class StartScreen(Screen):
-   
     def btn_config(self):
         """Switches to configuration panel"""
         sm = self.manager
@@ -131,6 +130,7 @@ if __name__ == '__main__':
     mq = MQTTconnector()
     mq.build_connection()
     mq.send_msg("Sende eine Nachricht")
+
 
 
 
