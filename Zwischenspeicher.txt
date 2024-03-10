@@ -6,3 +6,16 @@
             ToggleButton:
                 id: space
                 text: 'SPACE'
+
+
+BoxLayout:    
+                    orientation: "vertical"
+                    Label:
+                        id: Label_X
+                        text: "xxx"
+                    Label:
+                        id: Label_Y
+                        text: "yyy"
+                    Label:
+                        id: Label_Z
+                        text: "zzz"

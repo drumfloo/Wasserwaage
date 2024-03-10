@@ -10,12 +10,13 @@
                     
 <Libelle>:
     BoxLayout:        
-        orientation:"vertical"
+        orientation: "vertical"
         FloatLayout:
             size_hint_y:0.9
             CircleMAX:
                 size_hint: None, None
                 pos_hint: {'center_x': root.xval, 'center_y': 0.5}
+         
 
 <StartScreen>:
     BoxLayout:
@@ -34,16 +35,19 @@
                     on_press: 
                         root.manager.transition.direction = 'right'
                         root.btn_config()
-                Label:
-                    id: Label_X
-                    text: "0815"
-                Label:
-                    id: Label_Y
-                    text: "0815"
-                Label:
-                    id: Label_Z
-                    text: "0815"
-        
+                
+                BoxLayout:
+                    id: label_box
+                    orientation: "vertical"
+                    Label:
+                        id: "Label_X"
+                        text: root.send_data("x")
+                    Label:
+                        id: Label_Y
+                        text: root.send_data("y")
+                    Label:
+                        id: Label_Z
+                        text: root.send_data("z")
 
 
   

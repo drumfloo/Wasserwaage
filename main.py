@@ -6,7 +6,8 @@ import json
 from mqtt.mqtt_connector import MQTTconnector
 from kivy.clock import Clock
 from kivy.properties import NumericProperty,BooleanProperty
-import json
+import json 
+from kivy.uix.boxlayout import BoxLayout
 
 
 with open("synt_acc_data.json", "r") as file:
@@ -111,6 +112,7 @@ class StartScreen(Screen):
         super().__init__(**kw)
         self.xval = NumericProperty(0.0)
         self.direction = BooleanProperty(False)
+        #self.movement()
 
     
     def btn_config(self):
@@ -118,59 +120,60 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
     
+    def get_test_data(self):
+        with open("synt_acc_data.json", "r") as file:
+            test_data = json.loads(file.read())['data']
+            return test_data
+
+
+    # def get_X(self):
+    #     data = self.get_test_data()
+    #     for i in data:
+    #         return str(i[0])
+
+    # def get_Y(self):
+    #     data = self.get_test_data()
+    #     for i in data:
+    #         return str(i[1])
+
+    # def get_Z(self):
+    #     data = self.get_test_data()
+    #     for i in data:
+    #         return str(i[2])
     
-
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-
-    #     self.pos_x = (self.width-100)/2
-    #     self.pos_y = (self.height-100)/2
-    #     Clock.schedule_interval(self.test_pos, 0.01)
-        
-    # def test_pos(self, *args): 
-    #     pos_x_target_test = [700, 1]
-    #     pos_x_target = pos_x_target_test[0] if round(self.pos_x, 0) == round(pos_x_target_test[1], 0) else pos_x_target_test[1]
-    #     self.pos_y = (self.height-100)/2        
-    #     pos_x = self.get_x_pos(pos_x_target)
-    #     pos_y = self.pos_y
-
-    #     print(self.canvas)
-
-    #     self.canvas.get_group('libelle')[0].pos = pos_x, pos_y
+    def send_data(self, axe):
+        data = self.get_test_data()
+        for i in data:
+            if axe == "x":
+                return str(i[0])
+            elif axe == "y":
+                return str(i[1])
+            else: 
+                return str(i[2])
 
 
-    # def get_x_pos(self, pos_x_target):       
-    #     self.pos_x = (self.width-100)/2 if self.pos_x < 1 else self.pos_x
-    #     if round(self.pos_x, 0) == round(pos_x_target, 0):    
-    #         print('equal') 
-    #         return self.pos_x
-    #     elif self.pos_x < pos_x_target: 
-    #         print('to right')           
-    #         # self.pos_x +=  (pos_x_target/self.pos_x)*2
-    #         self.pos_x += 10
-    #     elif self.pos_x > pos_x_target and self.pos_x > 0:    
-    #         print('to left')   
-    #         self.pos_x -= 10
-    #         # self.pos_x -=  ((self.width-pos_x_target)/(self.width-self.pos_x))*2
-    #     return self.pos_x
-
-    
 
 class Libelle(Screen):
     xval = NumericProperty(0.0)
+    yval = NumericProperty(0.0)
     direction = BooleanProperty(False)
     test = BooleanProperty(True)
+    start_screen = StartScreen()
+    
     
     def __init__(self, **kwargs):
         super(Libelle, self).__init__(**kwargs)
         Clock.schedule_interval(self.update_value, 0.016)
         print(test_data)
+                
 
+        
     def update_value(self, dt):
         if self.test:
             self.run_test()
             return             
 
+        
     def run_test(self):
         if(self.direction==False):
             self.xval += 0.01
@@ -180,8 +183,31 @@ class Libelle(Screen):
         else:
             self.xval -= 0.01
             if(self.xval<=0.0):
-                self.direction=False   
+                self.direction=False
 
+     
+ 
+    
+    # def get_test_data(self):
+    #     with open("synt_acc_data.json", "r") as file:
+    #         test_data = json.loads(file.read())['data']
+    #         return test_data
+
+
+    # def movement(self):
+    #     print("movement() ausgeführt")
+    #     data = self.get_test_data()
+    #     self.ids.Label_X = "ÜBERSCHRIEBEN"
+
+        #for i in data:            
+            # self.ids.Label_X.text = str(i[0])
+            # self.ids.Label_Y.text = str(i[1])
+            # self.ids.Label_Z.text = str(i[2])
+
+            # self.label_x.text = f"X: {self.xval:.2f}"  
+            # self.label_y.text = f"Y: {self.xval:.2f}"  
+            # self.label_z.text = f"Z: {self.xval:.2f}"  
+  
 
 class ScaleApp(App):   
     def build(self):        
@@ -191,6 +217,7 @@ class ScaleApp(App):
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
         libelle = Libelle()
+
 
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
