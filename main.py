@@ -142,6 +142,7 @@ class StartScreen(Screen):
         self.direction = BooleanProperty(False)
         accelerometer.enable()
         Clock.schedule_interval(self.get_acceleration, 1 / 20.)        
+
         #self.movement()
 
     
@@ -149,6 +150,7 @@ class StartScreen(Screen):
         """Switches to configuration panel"""
         sm = self.manager
         sm.current = 'config'
+
     
     # def get_test_data(self):
     #     with open("synt_acc_data.json", "r") as file:
@@ -156,20 +158,24 @@ class StartScreen(Screen):
     #         return test_data
 
     def get_acceleration(self, dt):
-        time.sleep(3)
-        val = accelerometer.acceleration[:3]
-        print("VAL:")
-        print(val)
-        print(type(val))
+        try:
+            time.sleep(3)
+            val = accelerometer.acceleration[:3]
+            print("VAL:")
+            print(val)
+            print(type(val))
+        
 
         
-        if not val == (None, None, None):
-            self.ids.x_label.text = "X: " + str(val[0])
-            print(str(val[0]))
-            self.ids.y_label.text = "Y: " + str(val[1])
-            print(str(val[1]))
-            self.ids.z_label.text = "Z: " + str(val[2])
-            print(str(val[2]))
+            if not val == (None, None, None):            
+                self.ids.x_label.text = "X: " + str(val[0])
+                print(str(val[0]))
+                self.ids.y_label.text = "Y: " + str(val[1])
+                print(str(val[1]))
+                self.ids.z_label.text = "Z: " + str(val[2])
+                print(str(val[2]))
+        except Exception as e:
+            print(e) 
 
     
 
