@@ -15,8 +15,8 @@ import time
 
 
 
-with open("synt_acc_data.json", "r") as file:
-    test_data = json.loads(file.read())['data']
+# with open("synt_acc_data.json", "r") as file:
+#     test_data = json.loads(file.read())['data']
 
 
 # class AccelerometerTest(BoxLayout):
@@ -150,10 +150,10 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
     
-    def get_test_data(self):
-        with open("synt_acc_data.json", "r") as file:
-            test_data = json.loads(file.read())['data']
-            return test_data
+    # def get_test_data(self):
+    #     with open("synt_acc_data.json", "r") as file:
+    #         test_data = json.loads(file.read())['data']
+    #         return test_data
 
     def get_acceleration(self, dt):
         time.sleep(3)
@@ -188,18 +188,20 @@ class StartScreen(Screen):
     #     for i in data:
     #         return str(i[2])
     
-    def send_data(self, axe):
-        data = self.get_test_data()
-        for i in data:
-            if axe == "x":
-                print(str(i[0])) #DEBUG
-                return str(i[0])
-            elif axe == "y":
-                print(str(i[1]))#DEBUG
-                return str(i[1])
-            else: 
-                print(str(i[2]))#DEBUG
-                return str(i[2])
+   
+   
+    # def send_data(self, axe):
+    #     data = self.get_test_data()
+    #     for i in data:
+    #         if axe == "x":
+    #             print(str(i[0])) #DEBUG
+    #             return str(i[0])
+    #         elif axe == "y":
+    #             print(str(i[1]))#DEBUG
+    #             return str(i[1])
+    #         else: 
+    #             print(str(i[2]))#DEBUG
+    #             return str(i[2])
 
 
 
@@ -213,12 +215,13 @@ class Libelle(Screen):
     
     
     def __init__(self, **kwargs):
+        
         super(Libelle, self).__init__(**kwargs)
         Clock.schedule_interval(self.update_value, 0.016)
         #print(test_data)
-        self.start_screen.send_data("x")
-        self.start_screen.send_data("y")
-        self.start_screen.send_data("z")       
+        # self.start_screen.send_data("x")
+        # self.start_screen.send_data("y")
+        # self.start_screen.send_data("z")       
 
         
     def update_value(self, dt):
@@ -269,11 +272,11 @@ class ScaleApp(App):
         sm = ScreenManager()
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
-        libelle = Libelle()
+        #libelle = Libelle()
 
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
-        sm.add_widget(libelle)
+        #sm.add_widget(libelle)
         return sm
     
 if __name__ == '__main__':
