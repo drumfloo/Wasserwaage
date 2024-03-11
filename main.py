@@ -141,8 +141,8 @@ class StartScreen(Screen):
         self.xval = NumericProperty(0.0)
         self.direction = BooleanProperty(False)
         accelerometer.enable()
-        Clock.schedule_interval(self.get_acceleration, 1 / 20.)        
-
+        Clock.schedule_interval(self.get_acceleration, 1 / 20.)
+        
         #self.movement()
 
     
@@ -223,7 +223,8 @@ class Libelle(Screen):
     def __init__(self, **kwargs):
         
         super(Libelle, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update_value, 0.016)
+        #Clock.schedule_interval(self.update_value, 0.016)
+
         #print(test_data)
         # self.start_screen.send_data("x")
         # self.start_screen.send_data("y")
