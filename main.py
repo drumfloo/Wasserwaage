@@ -118,7 +118,6 @@ class StartScreen(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-       
         # self.direction = BooleanProperty(False)
         try:
             accelerometer.enable()
