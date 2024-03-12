@@ -134,6 +134,47 @@ class ConfigScreen(Screen):
         # on_press=popup.dismiss
         popup.open()
         
+
+class Libelle(Screen):
+    xval = NumericProperty(0.0)
+    yval = NumericProperty(0.0)
+    direction = BooleanProperty(False)
+    test = BooleanProperty(True)
+    #start_screen = StartScreen()
+    
+    
+    
+    def __init__(self, **kwargs):
+        
+        super(Libelle, self).__init__(**kwargs)
+        #Clock.schedule_interval(self.update_value, 0.016)
+
+        #print(test_data)
+        # self.start_screen.send_data("x")
+        # self.start_screen.send_data("y")
+        # self.start_screen.send_data("z")       
+
+        
+    def update_value(self, dt):
+        self.yval = str(dt[1])
+        self.xval = str(dt[0])
+        
+        #if self.test:
+         #   self.run_test()
+          #  return             
+
+        
+    def run_test(self):
+        if(self.direction==False):
+            self.xval += 0.01
+            if(self.xval>=1.0):
+                print("Test")
+                self.direction=True
+        else:
+            self.xval -= 0.01
+            if(self.xval<=0.0):
+                self.direction=False
+
 class StartScreen(Screen):
 
     def __init__(self, **kw):
@@ -212,45 +253,7 @@ class StartScreen(Screen):
 
 
 
-class Libelle(Screen):
-    xval = NumericProperty(0.0)
-    yval = NumericProperty(0.0)
-    direction = BooleanProperty(False)
-    test = BooleanProperty(True)
-    start_screen = StartScreen()
-    
-    
-    
-    def __init__(self, **kwargs):
-        
-        super(Libelle, self).__init__(**kwargs)
-        #Clock.schedule_interval(self.update_value, 0.016)
 
-        #print(test_data)
-        # self.start_screen.send_data("x")
-        # self.start_screen.send_data("y")
-        # self.start_screen.send_data("z")       
-
-        
-    def update_value(self, dt):
-        self.yval = str(dt[1])
-        self.xval = str(dt[0])
-        
-        #if self.test:
-         #   self.run_test()
-          #  return             
-
-        
-    def run_test(self):
-        if(self.direction==False):
-            self.xval += 0.01
-            if(self.xval>=1.0):
-                print("Test")
-                self.direction=True
-        else:
-            self.xval -= 0.01
-            if(self.xval<=0.0):
-                self.direction=False
 
      
  
