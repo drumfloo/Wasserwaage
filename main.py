@@ -142,7 +142,7 @@ class StartScreen(Screen):
         self.direction = BooleanProperty(False)
         accelerometer.enable()
         Clock.schedule_interval(self.get_acceleration, 1 / 20.)
-        
+        self.libelle = Libelle()
         #self.movement()
 
     
@@ -174,6 +174,7 @@ class StartScreen(Screen):
                 print(str(val[1]))
                 self.ids.z_label.text = "Z: " + str(val[2])
                 print(str(val[2]))
+                self.libelle.update_value(val)
         except Exception as e:
             print(e) 
 
@@ -232,9 +233,12 @@ class Libelle(Screen):
 
         
     def update_value(self, dt):
-        if self.test:
-            self.run_test()
-            return             
+        self.yval = str(dt[1])
+        self.xval = str(dt[0])
+        
+        #if self.test:
+         #   self.run_test()
+          #  return             
 
         
     def run_test(self):
