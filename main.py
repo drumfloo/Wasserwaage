@@ -70,7 +70,7 @@ class ConfigScreen(Screen):
 
 
     
-    def btn_checkConnection(self):
+    def btn_check_connection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
         try:
             self.mq = MQTTconnector(host=self.userIN['mqtt_host'],port=int(self.userIN['port']),topic=self.userIN['fullTopic'])
