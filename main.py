@@ -14,34 +14,6 @@ from plyer import accelerometer
 import time
 
 
-
-# with open("synt_acc_data.json", "r") as file:
-#     test_data = json.loads(file.read())['data']
-
-
-# class AccelerometerTest(BoxLayout):
-#     def __init__(self):
-#         super().__init__()
-#         self.sensorEnabled = False
-
-
-#     def get_acceleration(self, dt):
-#         val = accelerometer.acceleration[:3]
-#         if not val == (None, None, None):
-#             self.ids.x_label.text = "X: " + str(val[0])
-#             self.ids.y_label.text = "Y: " + str(val[1])
-#             self.ids.z_label.text = "Z: " + str(val[2])
-
-
-# class AccelerometerTestApp(App):
-#     def build(self):
-#         return AccelerometerTest()
-
-#     def on_pause(self):
-#         return True
-
-
-
 class ConfigScreen(Screen):
         
     credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
@@ -53,18 +25,22 @@ class ConfigScreen(Screen):
          #self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
+        time.sleep(1)
         self.fill_fields()
 
     def fill_fields(self, config_path = "mqtt/mqtt_config.json"):
-        print("fill")
-        with open(config_path, "r") as file:
-            dict_config = json.load(file)
-        
-        self.ids.mqtt_host_input.text = dict_config["host"]
-        self.ids.port_input.text = dict_config["port"]
-        self.ids.full_topic_input.text = dict_config["topic"]
-        self.ids.username_input.text = dict_config["username"]
-        self.ids.password_input.text = dict_config["password"]
+        try:
+            print("fill")
+            with open(config_path, "r") as file:
+                dict_config = json.load(file)
+            
+            self.ids.mqtt_host_input.text = dict_config["host"]
+            self.ids.port_input.text = dict_config["port"]
+            self.ids.full_topic_input.text = dict_config["topic"]
+            self.ids.username_input.text = dict_config["username"]
+            self.ids.password_input.text = dict_config["password"]
+        except Exception as e:
+            print(e)
         
 
 
@@ -134,48 +110,6 @@ class ConfigScreen(Screen):
         # on_press=popup.dismiss
         popup.open()
         
-
-class Libelle(Screen):
-    xval = NumericProperty(0.5)
-    yval = NumericProperty(0.5)
-    direction = BooleanProperty(False)
-    test = BooleanProperty(True)
-    
-    
-    
-    def __init__(self, **kwargs):
-        
-        super(Libelle, self).__init__(**kwargs)
-        #Clock.schedule_interval(self.update_value, 0.016)
-        
-    
-
-        
-    def update_value(self, dt):
-        dt = (-2,5)
-        print(self.yval)
-        print((float(dt[1]) - float(self.yval)) / 10)
-        self.yval = (float(dt[1]) / 20) + 0.5
-        print(dt[0])
-        self.xval = (float(dt[0]) / 20) + 0.5
-        print(self.xval)
-        print((float(dt[0]) - float(self.yval)) / 10)
-        print()
-        #if self.test:
-         #   self.run_test()
-          #  return             
-
-        
-    def run_test(self):
-        if(self.direction==False):
-            self.xval += 0.01
-            if(self.xval>=1.0):
-                print("Test")
-                self.direction=True
-        else:
-            self.xval -= 0.01
-            if(self.xval<=0.0):
-                self.direction=False
 
 class StartScreen(Screen):
     pos_y = NumericProperty(0.5)
