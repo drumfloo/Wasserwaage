@@ -152,11 +152,14 @@ class Libelle(Screen):
 
         
     def update_value(self, dt):
-        print(dt)
-        self.yval = f"{dt[1]:.5f}"
+        print(self.yval)
+        print((float(dt[1]) - float(self.yval)) / 10)
+        self.yval += (float(dt[1]) - float(self.yval)) / 10
         print(dt[0])
-        self.xval = f"{dt[0]:.5f}"
-        print(dt[0])
+        self.xval += (float(dt[0]) - float(self.xval)) / 10
+        print(self.xval)
+        print((float(dt[0]) - float(self.yval)) / 10)
+        print()
         #if self.test:
          #   self.run_test()
           #  return             
