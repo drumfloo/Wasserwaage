@@ -136,11 +136,10 @@ class ConfigScreen(Screen):
         
 
 class Libelle(Screen):
-    xval = NumericProperty(0.0)
-    yval = NumericProperty(0.0)
+    xval = NumericProperty(0.5)
+    yval = NumericProperty(0.5)
     direction = BooleanProperty(False)
     test = BooleanProperty(True)
-    #start_screen = StartScreen()
     
     
     
@@ -148,15 +147,17 @@ class Libelle(Screen):
         
         super(Libelle, self).__init__(**kwargs)
         #Clock.schedule_interval(self.update_value, 0.016)
+        
     
 
         
     def update_value(self, dt):
+        dt = (-2,5)
         print(self.yval)
         print((float(dt[1]) - float(self.yval)) / 10)
-        self.yval += (float(dt[1]) - float(self.yval)) / 10
+        self.yval = (float(dt[1]) / 20) + 0.5
         print(dt[0])
-        self.xval += (float(dt[0]) - float(self.xval)) / 10
+        self.xval = (float(dt[0]) / 20) + 0.5
         print(self.xval)
         print((float(dt[0]) - float(self.yval)) / 10)
         print()
@@ -177,14 +178,22 @@ class Libelle(Screen):
                 self.direction=False
 
 class StartScreen(Screen):
+    pos_y = NumericProperty(0.5)
+    pos_x = NumericProperty(0.5)
+    pos_z = NumericProperty(0.5)
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.xval = NumericProperty(0.0)
-        self.direction = BooleanProperty(False)
-        accelerometer.enable()
-        Clock.schedule_interval(self.get_acceleration, 1 / 20.)
-        self.libelle = Libelle()
+       
+        # self.direction = BooleanProperty(False)
+        try:
+            accelerometer.enable()
+            Clock.schedule_interval(self.get_acceleration, 1 / 60.)  
+        except Exception as e:
+            print(e)
+              
+      
+
         #self.movement()
 
     
@@ -193,11 +202,11 @@ class StartScreen(Screen):
         sm = self.manager
         sm.current = 'config'
 
-    
-    # def get_test_data(self):
-    #     with open("synt_acc_data.json", "r") as file:
-    #         test_data = json.loads(file.read())['data']
-    #         return test_data
+
+    def update_dragonfly(self, pos):
+        self.pos_x = pos[0] / 20 + 0.5
+        self.pos_y = pos[1] / 20 + 0.5
+
 
     def get_acceleration(self, dt):
         try:
@@ -205,9 +214,7 @@ class StartScreen(Screen):
             print("VAL:")
             print(val)
             print(type(val))
-        
 
-        
             if not val == (None, None, None):            
                 self.ids.x_label.text = "X: " + str(val[0])
                 print(str(val[0]))
@@ -215,69 +222,10 @@ class StartScreen(Screen):
                 print(str(val[1]))
                 self.ids.z_label.text = "Z: " + str(val[2])
                 print(str(val[2]))
-                print()
-                self.libelle.update_value(val)
+                self.update_dragonfly(val)
         except Exception as e:
             print(e) 
 
-    
-
-    # def get_X(self):
-    #     data = self.get_test_data()
-    #     for i in data:
-    #         return str(i[0])
-
-    # def get_Y(self):
-    #     data = self.get_test_data()
-    #     for i in data:
-    #         return str(i[1])
-
-    # def get_Z(self):
-    #     data = self.get_test_data()
-    #     for i in data:
-    #         return str(i[2])
-    
-   
-   
-    # def send_data(self, axe):
-    #     data = self.get_test_data()
-    #     for i in data:
-    #         if axe == "x":
-    #             print(str(i[0])) #DEBUG
-    #             return str(i[0])
-    #         elif axe == "y":
-    #             print(str(i[1]))#DEBUG
-    #             return str(i[1])
-    #         else: 
-    #             print(str(i[2]))#DEBUG
-    #             return str(i[2])
-
-
-
-
-
-     
- 
-    
-    # def get_test_data(self):
-    #     with open("synt_acc_data.json", "r") as file:
-    #         test_data = json.loads(file.read())['data']
-    #         return test_data
-
-
-    # def movement(self):
-    #     print("movement() ausgeführt")
-    #     data = self.get_test_data()
-    #     self.ids.Label_X = "ÜBERSCHRIEBEN"
-
-        #for i in data:            
-            # self.ids.Label_X.text = str(i[0])
-            # self.ids.Label_Y.text = str(i[1])
-            # self.ids.Label_Z.text = str(i[2])
-
-            # self.label_x.text = f"X: {self.xval:.2f}"  
-            # self.label_y.text = f"Y: {self.xval:.2f}"  
-            # self.label_z.text = f"Z: {self.xval:.2f}"  
   
 
 class ScaleApp(App):   
