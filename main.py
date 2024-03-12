@@ -148,17 +148,15 @@ class Libelle(Screen):
         
         super(Libelle, self).__init__(**kwargs)
         #Clock.schedule_interval(self.update_value, 0.016)
-
-        #print(test_data)
-        # self.start_screen.send_data("x")
-        # self.start_screen.send_data("y")
-        # self.start_screen.send_data("z")       
+    
 
         
     def update_value(self, dt):
-        self.yval = str(dt[1])
-        self.xval = str(dt[0])
-        
+        print(dt)
+        self.yval = f"{dt[1]:.5f}"
+        print(dt[0])
+        self.xval = f"{dt[0]:.5f}"
+        print(dt[0])
         #if self.test:
          #   self.run_test()
           #  return             
@@ -200,7 +198,6 @@ class StartScreen(Screen):
 
     def get_acceleration(self, dt):
         try:
-            time.sleep(3)
             val = accelerometer.acceleration[:3]
             print("VAL:")
             print(val)
@@ -215,6 +212,7 @@ class StartScreen(Screen):
                 print(str(val[1]))
                 self.ids.z_label.text = "Z: " + str(val[2])
                 print(str(val[2]))
+                print()
                 self.libelle.update_value(val)
         except Exception as e:
             print(e) 
