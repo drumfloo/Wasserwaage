@@ -120,7 +120,7 @@ class StartScreen(Screen):
         super().__init__(**kw)
         # self.direction = BooleanProperty(False)
         try:
-            accelerometer.enable()
+           # accelerometer.enable()
             Clock.schedule_interval(self.get_acceleration, 1 / 60.)
             self.mq = MQTTconnector()  
         except Exception as e:
@@ -144,18 +144,12 @@ class StartScreen(Screen):
 
     def get_acceleration(self, dt):
         try:
-            val = accelerometer.acceleration[:3]
-            print("VAL:")
-            print(val)
-            print(type(val))
-
+           # val = accelerometer.acceleration[:3]
+            val = (0.8,7,2)
             if not val == (None, None, None):            
                 self.ids.x_label.text = "X: " + str(val[0])
-                print(str(val[0]))
                 self.ids.y_label.text = "Y: " + str(val[1])
-                print(str(val[1]))
                 self.ids.z_label.text = "Z: " + str(val[2])
-                print(str(val[2]))
                 self.update_dragonfly(val)
                 self.mq.send_msg(str(val))
         except Exception as e:
