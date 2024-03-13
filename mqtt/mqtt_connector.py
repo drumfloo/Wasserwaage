@@ -5,6 +5,7 @@ class MQTTconnector:
     host = ""
     port = 0
     topic = ""
+    mqtt_client = object
 
     def __init__(self, shost="broker.hivemq.com", stopic = "gsog/test/waage", sport=1883) -> None:
         global host
@@ -19,14 +20,17 @@ class MQTTconnector:
     def build_connection(self):
         global host
         global port
-        self.mqtt_client= paho.Client(paho.CallbackAPIVersion.VERSION2 ,self.client_id)
-        self.mqtt_client.connect(host,port)
+        global mqtt_client
+        mqtt_client= paho.Client(paho.CallbackAPIVersion.VERSION2 ,self.client_id)
+        mqtt_client.connect(host,port)
 
     def send_msg(self, msg):
        global topic
-       status,_ = self.mqtt_client.publish(topic, msg, qos=0)
+       global mqtt_client
+       status,_ = mqtt_client.publish(topic, msg, qos=0)
        if status == 0:
         print(f"Send successful")
 
     def disconnection(self):
-       self.mqtt_client.disconnect()
+       global mqtt_client
+       mqtt_client.disconnect()
