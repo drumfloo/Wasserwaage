@@ -15,7 +15,6 @@ class MQTTconnector:
         topic = stopic
         port = sport
         self.client_id = str(uuid.uuid1())
-        print(host, port, topic)
 
 
     def build_connection(self):
@@ -25,9 +24,7 @@ class MQTTconnector:
             global mqtt_client
             mqtt_client= paho.Client(paho.CallbackAPIVersion.VERSION2 ,self.client_id)
             mqtt_client.connect(host,port)
-            print(host, port, topic, mqtt_client)
         except Exception as e:
-            print(host, port, topic, mqtt_client)
             print("Exception in build_connection")
             print(e)
 
@@ -35,12 +32,11 @@ class MQTTconnector:
         try:
             global topic
             global mqtt_client
-            print(host, port, topic, mqtt_client)
+    
             status,_ = mqtt_client.publish(topic, msg, qos=0)
             if status == 0:
                 print(f"Send successfull")
         except Exception as e:
-            print(host, port, topic, mqtt_client)
             print("Exception in send_msg")
             print(e)
 

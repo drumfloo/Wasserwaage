@@ -25,35 +25,17 @@ class ConfigScreen(Screen):
          self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
-        time.sleep(1)
+        time.sleep(0.5)
         self.load_saved_values()
-
-    def fill_fields(self, config_path = "mqtt/mqtt_config.json"):
-        try:
-            print("fill")
-            with open(config_path, "r") as file:
-                dict_config = json.load(file)
-            
-            
-            
-            self.ids.mqtt_host_input.text = dict_config["host"]
-            self.ids.port_input.text = dict_config["port"]
-            self.ids.full_topic_input.text = dict_config["topic"]
-            self.ids.username_input.text = dict_config["username"]
-            self.ids.password_input.text = dict_config["password"]
-        except Exception as e:
-            print(e)
 
 
     def save_values(self):
         config = ConfigParser()
-
         
         try:
             config.read('config.ini')
         except FileNotFoundError:
             pass
-
         
         config['Credentials'] = {
             "host": self.userIN["mqtt_host"],
@@ -69,16 +51,14 @@ class ConfigScreen(Screen):
 
 
     def load_saved_values(self):
-        # Initialisiere ConfigParser
         config = ConfigParser()
 
-        # Versuche, die Konfigurationsdatei zu öffnen
+        
         try:
             config.read('config.ini')
         except FileNotFoundError:
             return
 
-        # Lade gespeicherte Werte in die Textfelder
         if 'Credentials' in config:
             credentials = config['Credentials']
             if 'username' in credentials:
@@ -124,32 +104,17 @@ class ConfigScreen(Screen):
     def btn_check_connection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
         try:
-            print("check_connection 1")
             self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
-            print("check_connection 2")
             self.mq.build_connection()
-            print("check_connection 3")
             
             self.save_values()
+            self.mq.send_msg("geht")
             self.notification("Connected")
 
         except Exception as e:
             print(e)
             self.notification(str(e) + " Connection not ready")
 
-
-    def save_config(self):
-        with open("mqtt/mqtt_config.json", "r") as file:
-            dict_config = json.load(file)
-
-        dict_config["host"] = self.userIN["mqtt_host"]
-        dict_config["port"] = self.userIN["port"]
-        dict_config["topic"] = self.userIN["fullTopic"]
-        dict_config["username"] = self.userIN["userName"]
-        dict_config["password"] = self.userIN["password"]
-
-        with open("mqtt/mqtt_config.json", "w") as outfile: 
-            json.dump(dict_config, outfile)
     
     # Notification
     def notification(self, msg: str):
