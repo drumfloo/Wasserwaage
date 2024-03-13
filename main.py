@@ -174,7 +174,8 @@ class StartScreen(Screen):
   
 
 class ScaleApp(App):   
-    def build(self):        
+    def build(self):
+        facades.Orientation.set_sensor('landscape')        
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
