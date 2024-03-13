@@ -137,8 +137,13 @@ class StartScreen(Screen):
 
 
     def update_dragonfly(self, pos):
-        self.pos_x = pos[0] / 20 + 0.5
-        self.pos_y = pos[1] / 20 + 0.5
+        x = f"{pos[0]:.3f}"
+        y = f"{pos[1]:.3f}"
+        self.pos_x = x / 20 + 0.5
+        self.pos_y = y / 20 + 0.5
+        #Original
+        # self.pos_x = pos[0] / 20 + 0.5
+        # self.pos_y = pos[1] / 20 + 0.5
 
 
     def get_acceleration(self, dt):
@@ -149,12 +154,18 @@ class StartScreen(Screen):
             print(type(val))
 
             if not val == (None, None, None):            
-                self.ids.x_label.text = "X: " + str(val[0])
+                #self.ids.x_label.text = "X: " + str(val[0])
+                self.ids.x_label.text = f"X: {val[0]:.3f}"  #Test
                 print(str(val[0]))
-                self.ids.y_label.text = "Y: " + str(val[1])
+
+                #self.ids.y_label.text = "Y: " + str(val[1])
+                self.ids.y_label.text = f"Y: {val[1]:.3f}"  #Test
                 print(str(val[1]))
-                self.ids.z_label.text = "Z: " + str(val[2])
+
+                #self.ids.z_label.text = "Z: " + str(val[2])
+                self.ids.z_label.text = f"Z: {val[2]:.3f}"  #Test
                 print(str(val[2]))
+
                 self.update_dragonfly(val)
         except Exception as e:
             print(e) 
