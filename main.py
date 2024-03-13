@@ -8,7 +8,7 @@ from kivy.clock import Clock
 from kivy.properties import NumericProperty,BooleanProperty
 import json 
 from kivy.uix.boxlayout import BoxLayout
-
+from configparser import ConfigParser
 from kivy.clock import Clock
 from plyer import accelerometer
 import time
@@ -26,13 +26,15 @@ class ConfigScreen(Screen):
 
     def on_pre_enter(self, *args):
         time.sleep(1)
-        self.fill_fields()
+        self.load_saved_values()
 
     def fill_fields(self, config_path = "mqtt/mqtt_config.json"):
         try:
             print("fill")
             with open(config_path, "r") as file:
                 dict_config = json.load(file)
+            
+            
             
             self.ids.mqtt_host_input.text = dict_config["host"]
             self.ids.port_input.text = dict_config["port"]
@@ -41,6 +43,55 @@ class ConfigScreen(Screen):
             self.ids.password_input.text = dict_config["password"]
         except Exception as e:
             print(e)
+
+
+    def save_values(self):
+        config = ConfigParser()
+
+        
+        try:
+            config.read('config.ini')
+        except FileNotFoundError:
+            pass
+
+        
+        config['Credentials'] = {
+            "host": self.userIN["mqtt_host"],
+            "port": self.userIN["port"],
+            "topic": self.userIN["fullTopic"],
+            "username": self.userIN["userName"],
+            "password": self.userIN["password"]
+        }
+
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+
+
+
+    def load_saved_values(self):
+        # Initialisiere ConfigParser
+        config = ConfigParser()
+
+        # Versuche, die Konfigurationsdatei zu öffnen
+        try:
+            config.read('config.ini')
+        except FileNotFoundError:
+            return
+
+        # Lade gespeicherte Werte in die Textfelder
+        if 'Credentials' in config:
+            credentials = config['Credentials']
+            if 'username' in credentials:
+                self.ids.username_input.text = credentials['username']
+            if 'password' in credentials:
+                self.ids.password_input.text = credentials['password']
+            if 'host' in credentials:
+                self.ids.mqtt_host_input.text   = credentials['host']
+            if 'port' in credentials:
+                self.ids.port_input.text = credentials['port']               
+            if 'topic' in credentials:             
+                self.ids.full_topic_input.text =credentials["topic"]
+        
         
 
 
@@ -79,7 +130,7 @@ class ConfigScreen(Screen):
             self.mq.build_connection()
             print("check_connection 3")
             
-            self.save_config()
+            self.save_values()
             self.notification("Connected")
 
         except Exception as e:
@@ -123,7 +174,7 @@ class StartScreen(Screen):
         super().__init__(**kw)
         # self.direction = BooleanProperty(False)
         try:
-            accelerometer.enable()
+            #accelerometer.enable()
             Clock.schedule_interval(self.get_acceleration, 1 / 60.)
             self.mq = MQTTconnector()  
         except Exception as e:
@@ -147,8 +198,8 @@ class StartScreen(Screen):
 
     def get_acceleration(self, dt):
         try:
-            val = accelerometer.acceleration[:3]
-           
+            #val = accelerometer.acceleration[:3]
+            val = (5,6,7)
             if not val == (None, None, None):            
                 self.ids.x_label.text = "X: " + str(val[0])
                 self.ids.y_label.text = "Y: " + str(val[1])
