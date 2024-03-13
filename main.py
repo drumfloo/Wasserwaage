@@ -157,7 +157,7 @@ class StartScreen(Screen):
                 self.ids.z_label.text = "Z: " + str(val[2])
                 print(str(val[2]))
                 self.update_dragonfly(val)
-                self.mq.send_msg(val)
+                self.mq.send_msg(str(val))
         except Exception as e:
             print(e) 
 
