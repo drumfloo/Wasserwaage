@@ -136,6 +136,8 @@ class StartScreen(Screen):
         sm.current = 'config'
 
 
+
+    # Original
     def update_dragonfly(self, pos):
         x = round(pos[0], 1)
         y = round(pos[1], 1)
@@ -145,6 +147,10 @@ class StartScreen(Screen):
         #Original
         # self.pos_x = pos[0] / 20 + 0.5
         # self.pos_y = pos[1] / 20 + 0.5
+
+
+    def update_dragonfly(self, pos):
+        pass
 
 
     def get_acceleration(self, dt):
@@ -175,7 +181,6 @@ class StartScreen(Screen):
 
 class ScaleApp(App):   
     def build(self):
-        facades.Orientation.set_sensor('landscape')        
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
