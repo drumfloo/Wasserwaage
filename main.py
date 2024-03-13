@@ -178,9 +178,6 @@ class ScaleApp(App):
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
-
-        #facades.Orientation.set_landscape(reverse=False)
-        facades.Orientation.set_sensor('landscape')
         
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
@@ -194,4 +191,6 @@ if __name__ == '__main__':
     mq = MQTTconnector()
     mq.build_connection()
     mq.send_msg("Sende eine Nachricht")
-    
+
+#facades.Orientation.set_landscape(reverse=False)
+# facades.Orientation.set_sensor('landscape')
