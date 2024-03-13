@@ -8,10 +8,10 @@ from kivy.clock import Clock
 from kivy.properties import NumericProperty,BooleanProperty
 import json 
 from kivy.uix.boxlayout import BoxLayout
-
 from kivy.clock import Clock
-from plyer import accelerometer
+from plyer import accelerometer, facades
 import time
+
 
 
 class ConfigScreen(Screen):
@@ -137,8 +137,8 @@ class StartScreen(Screen):
 
 
     def update_dragonfly(self, pos):
-        y = round(pos[0], 3)    # changed y with x for testing
-        x = round(pos[1], 3)
+        x = round(pos[0], 1)
+        y = round(pos[1], 1)
         self.pos_x = x / 20 + 0.5
         self.pos_y = y / 20 + 0.5
 
@@ -178,13 +178,15 @@ class ScaleApp(App):
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
+
+        #facades.Orientation.set_landscape(reverse=False)
+        facades.Orientation.set_sensor('landscape')
+        
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
-        #libelle = Libelle()
 
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
-        #sm.add_widget(libelle)
         return sm
     
 if __name__ == '__main__':
@@ -192,3 +194,4 @@ if __name__ == '__main__':
     mq = MQTTconnector()
     mq.build_connection()
     mq.send_msg("Sende eine Nachricht")
+    
