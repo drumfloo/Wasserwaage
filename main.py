@@ -139,8 +139,8 @@ class StartScreen(Screen):
 
     # Original
     def update_dragonfly(self, pos):
-        x = round(pos[0], 1)
-        y = round(pos[1], 1)
+        x = round(pos[0], 2)
+        y = round(pos[1], 2)
         self.pos_x = x / 20 + 0.5
         self.pos_y = y / 20 + 0.5
 
