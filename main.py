@@ -9,7 +9,7 @@ from kivy.properties import NumericProperty,BooleanProperty
 import json 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
-from plyer import accelerometer, facades
+from plyer import accelerometer
 import time
 
 
@@ -116,6 +116,9 @@ class StartScreen(Screen):
     pos_x = NumericProperty(0.5)
     pos_z = NumericProperty(0.5)
 
+    # arr_of_X = []
+    # arr_of_Y = []
+
     def __init__(self, **kw):
         super().__init__(**kw)
         # self.direction = BooleanProperty(False)
@@ -125,9 +128,6 @@ class StartScreen(Screen):
         except Exception as e:
             print(e)
               
-      
-
-        #self.movement()
 
     
     def btn_config(self):
@@ -137,25 +137,29 @@ class StartScreen(Screen):
 
 
 
-    # Original
     def update_dragonfly(self, pos):
-        x = round(pos[0], 2)
-        y = round(pos[1], 2)
-        self.pos_x = x / 20 + 0.5
-        self.pos_y = y / 20 + 0.5
+        # x = round(pos[0], 1)
+        # y = round(pos[1], 1)
+        # self.pos_x = x / 20 + 0.5
+        # self.pos_y = y / 20 + 0.5
 
         #Original
-        # self.pos_x = pos[0] / 20 + 0.5
-        # self.pos_y = pos[1] / 20 + 0.5
+        self.pos_x = pos[0] / 20 + 0.5
+        self.pos_y = pos[1] / 20 + 0.5
 
 
-    def update_dragonfly(self, pos):
-        pass
+
+    # def collector_X_Y(self, pos):
+    #     if len(self.arr_of_X) < 6 and len(self.arr_of_Y) <= 6:
+    #         self.arr_of_X.append(pos[0])
+    #         self.arr_of_Y.append(pos[1])
+
 
 
     def get_acceleration(self, dt):
         try:
             val = accelerometer.acceleration[:3]
+            #val = (3.121232, 5.2342, 0.23432)
             print("VAL:")
             print(val)
             print(type(val))
