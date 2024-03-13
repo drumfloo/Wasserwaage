@@ -137,10 +137,11 @@ class StartScreen(Screen):
 
 
     def update_dragonfly(self, pos):
-        x = f"{pos[0]:.3f}"
-        y = f"{pos[1]:.3f}"
+        y = round(pos[0], 3)    # changed y with x for testing
+        x = round(pos[1], 3)
         self.pos_x = x / 20 + 0.5
         self.pos_y = y / 20 + 0.5
+
         #Original
         # self.pos_x = pos[0] / 20 + 0.5
         # self.pos_y = pos[1] / 20 + 0.5
