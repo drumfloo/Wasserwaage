@@ -22,7 +22,7 @@ class ConfigScreen(Screen):
     def __init__(self, **kwargs):
          super(ConfigScreen, self).__init__(**kwargs)
          self.size_hint = (1, 1)
-         #self.mq = MQTTconnector()       
+         self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
         time.sleep(1)
@@ -73,14 +73,14 @@ class ConfigScreen(Screen):
     def btn_check_connection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
         try:
-            self.mq = MQTTconnector(host=self.userIN['mqtt_host'],port=int(self.userIN['port']),topic=self.userIN['fullTopic'])
+            self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
             self.mq.build_connection()
             
             self.save_config()
             self.notification("Connected")
 
         except Exception as e:
-            print(type(str(e)))
+            print(str(e))
             self.notification(str(e) + " Connection not ready")
 
 
@@ -121,7 +121,8 @@ class StartScreen(Screen):
         # self.direction = BooleanProperty(False)
         try:
             accelerometer.enable()
-            Clock.schedule_interval(self.get_acceleration, 1 / 60.)  
+            Clock.schedule_interval(self.get_acceleration, 1 / 60.)
+            self.mq = MQTTconnector()  
         except Exception as e:
             print(e)
               
@@ -156,6 +157,7 @@ class StartScreen(Screen):
                 self.ids.z_label.text = "Z: " + str(val[2])
                 print(str(val[2]))
                 self.update_dragonfly(val)
+                self.mq.send_msg(val)
         except Exception as e:
             print(e) 
 
@@ -179,4 +181,3 @@ if __name__ == '__main__':
     ScaleApp().run()
     mq = MQTTconnector()
     mq.build_connection()
-    mq.send_msg("Sende eine Nachricht")
