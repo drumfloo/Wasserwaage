@@ -1,1 +1,1 @@
-{"broker": "broker.hivemq.com", "port": "1883", "host": "broker.hivemq.com", "topic": "gsog/test/waage", "username": "Necip", "password": "12345"}
+{"broker": "broker.hivemq.com", "port": "1883", "host": "broker.hivemq.com", "topic": "gsog/test/flo", "username": "Necip", "password": "12345"}

@@ -27,6 +27,7 @@ class MQTTconnector:
             mqtt_client.connect(host,port)
             print(host, port, topic, mqtt_client)
         except Exception as e:
+            print(host, port, topic, mqtt_client)
             print("Exception in build_connection")
             print(e)
 
@@ -37,10 +38,11 @@ class MQTTconnector:
             print(host, port, topic, mqtt_client)
             status,_ = mqtt_client.publish(topic, msg, qos=0)
             if status == 0:
-                print(f"Send successful")
+                print(f"Send successfull")
         except Exception as e:
-           print("Exception in send_msg")
-           print(e)
+            print(host, port, topic, mqtt_client)
+            print("Exception in send_msg")
+            print(e)
 
     def disconnection(self):
        global mqtt_client

@@ -73,14 +73,17 @@ class ConfigScreen(Screen):
     def btn_check_connection(self):
         """Checks if connection credentials set correct and connection can be ethablished"""
         try:
+            print("check_connection 1")
             self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
+            print("check_connection 2")
             self.mq.build_connection()
+            print("check_connection 3")
             
             self.save_config()
             self.notification("Connected")
 
         except Exception as e:
-            print(str(e))
+            print(e)
             self.notification(str(e) + " Connection not ready")
 
 
