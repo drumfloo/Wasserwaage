@@ -1,7 +1,5 @@
 [app]
 
-android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
-
 title = Wasserwaage
 package.name = wasserwaage
 package.domain = gsog.de
