@@ -116,8 +116,8 @@ class StartScreen(Screen):
     pos_x = NumericProperty(0.5)
     pos_z = NumericProperty(0.5)
 
-    # arr_of_X = []
-    # arr_of_Y = []
+    arr_of_X = []
+    arr_of_Y = []
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -138,21 +138,39 @@ class StartScreen(Screen):
 
 
     def update_dragonfly(self, pos):
+        
+        self.pos_x = pos[0] / 20 + 0.5
+        self.pos_y = pos[1] / 20 + 0.5
+
         # x = round(pos[0], 1)
         # y = round(pos[1], 1)
         # self.pos_x = x / 20 + 0.5
         # self.pos_y = y / 20 + 0.5
+    
 
-        #Original
-        self.pos_x = pos[0] / 20 + 0.5
-        self.pos_y = pos[1] / 20 + 0.5
+# Versuchsfeld "Libellen-smoothen"********************************************
+    def update_dragonfly(self, array):
+        self.pos_x = self.average_pos(self.arr_of_X)
+        self.pos_y = self.average_pos(self.arr_of_Y)
+
+
+    def collector_X_Y(self, pos):
+        if len(self.arr_of_X) < 10 and len(self.arr_of_Y) <= 10:
+            self.arr_of_X.append(pos[0])
+            self.arr_of_Y.append(pos[1])
+        else:
+            self.arr_of_X = self.arr_of_X[1:]
+            self.arr_of_Y = []
+
+    def average_pos(self, array):
+        pos_smoothened = [i+i / len(array) for i in array]
+        return pos_smoothened[0]
 
 
 
-    # def collector_X_Y(self, pos):
-    #     if len(self.arr_of_X) < 6 and len(self.arr_of_Y) <= 6:
-    #         self.arr_of_X.append(pos[0])
-    #         self.arr_of_Y.append(pos[1])
+
+# Versuchsfeld "Libellen-smoothen"********************************************
+            
 
 
 

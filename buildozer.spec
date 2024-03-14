@@ -4,6 +4,7 @@ title = Wasserwaage
 package.name = wasserwaage
 package.domain = gsog.de
 
+kivy==master
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,mp3
 
