@@ -12,6 +12,8 @@ from configparser import ConfigParser
 from kivy.clock import Clock
 from plyer import accelerometer
 import time
+import ssl
+
 
 
 class ConfigScreen(Screen):
@@ -184,7 +186,7 @@ class ScaleApp(App):
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
         #libelle = Libelle()
-
+        ssl._create_default_https_context = ssl._create_stdlib_context
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
         #sm.add_widget(libelle)
