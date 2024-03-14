@@ -197,7 +197,7 @@ class StartScreen(Screen):
   
 
 class ScaleApp(App):
-       
+
     def build(self):
         self.icon = 'Wasserwaage_icon.png'
         orientation.set_landscape()
