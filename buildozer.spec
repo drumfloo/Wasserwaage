@@ -3,7 +3,8 @@
 title = Wasserwaage
 package.name = wasserwaage
 package.domain = gsog.de
-#icon.filename = %(source.dir)s/Wasserwaage_icon.png
+
+icon.filename = %(source.dir)icon.png
 
 kivy==master
 source.dir = .

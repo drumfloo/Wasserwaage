@@ -11,7 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from plyer import accelerometer
 import time
-from plyer import orientation
+#from plyer import orientation
 
 
 class ConfigScreen(Screen):
@@ -199,8 +199,8 @@ class StartScreen(Screen):
 class ScaleApp(App):
 
     def build(self):
-        self.icon = 'Wasserwaage_icon.png'
-        orientation.set_landscape()
+        self.icon = 'icon.png'
+        #orientation.set_landscape()
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
