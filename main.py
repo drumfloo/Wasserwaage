@@ -52,7 +52,7 @@ class ConfigScreen(Screen):
         
 
 
-    # Buttons
+# Buttons *************************************************  
     def btn_back(self):
         """Navigate back to *sm.current* value defined in ScaleApp class"""
         sm = self.manager
@@ -82,6 +82,8 @@ class ConfigScreen(Screen):
         except Exception as e:
             print(type(str(e)))
             self.notification(str(e) + " Connection not ready")
+# ********************************************************  
+
 
 
     def save_config(self):
@@ -144,11 +146,10 @@ class StartScreen(Screen):
     
         
 
-# Versuchsfeld "Libellen-smoother"********************************************
-    
+# Libellen-smoother*********************************************   
     def collector_X_Y(self, pos):
         """Takes the sensor data Tuple and adds to x/y array respectively"""
-        if len(self.arr_of_X) < 5 and len(self.arr_of_Y) < 5:
+        if len(self.arr_of_X) < 10 and len(self.arr_of_Y) < 10:
             self.arr_of_X.append(pos[0])
             self.arr_of_Y.append(pos[1])
         else:
@@ -160,20 +161,19 @@ class StartScreen(Screen):
         """Updates position of libelle. Smoothening the noise from sensor"""
         self.pos_x = (round(sum(arrayX) / len(arrayX), 1)) / 20 + 0.5
         self.pos_y = (round(sum(arrayY) / len(arrayY), 1)) / 20 + 0.5
-        
-        print(f"average_pos() X-wert = {self.pos_x}")
-        print(f"average_pos() Y-wert = {self.pos_y}")
-    
+
         self.arr_of_X = [0, 0]
         self.arr_of_Y = [0, 0]
 
 
-# Versuchsfeld "Libellen-smoother"********************************************
-            
+# **************************************************************** 
+
+
 
 
 
     def get_acceleration(self, dt):
+        """Gets acceleration data, sends it to label & to the smoothening-process logic"""
         try:
             val = accelerometer.acceleration[:3]
             #val = (3.121232, 5.2342, 0.23432)
@@ -182,8 +182,6 @@ class StartScreen(Screen):
             print(type(val))
 
             if not val == (None, None, None):            
-                #self.ids.x_label.text = "X: " + str(val[0])
-
                 self.ids.x_label.text = f"X: {val[0]:.3f}"  
                 print(str(val[0]))
                 self.ids.y_label.text = f"Y: {val[1]:.3f}"  
