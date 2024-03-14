@@ -198,7 +198,7 @@ class StartScreen(Screen):
 
 class ScaleApp(App):   
     def build(self):
-        orientation.set_landscape(reverse=False)
+        orientation.set_landscape()
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
