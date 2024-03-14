@@ -18,7 +18,6 @@ from kivy.config import Config
 Config.set('graphics', 'orientation', 'landscape')
 
 
-
 class ConfigScreen(Screen):
         
     userIN = {}
@@ -29,11 +28,13 @@ class ConfigScreen(Screen):
          self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
+        '''After enter fill text fields'''
         time.sleep(0.5)
         self.load_saved_values()
 
 
     def save_values(self):
+        '''Save the user input in a Config file'''
         config = ConfigParser()
         
         try:
@@ -55,6 +56,7 @@ class ConfigScreen(Screen):
 
 
     def load_saved_values(self):
+        '''Read Config file'''
         config = ConfigParser()
 
         
@@ -184,13 +186,14 @@ class StartScreen(Screen):
 
 
     def get_acceleration(self, dt):
+        '''Get accelerometer values, send it to mqtt and show it'''
         try:
             val = accelerometer.acceleration[:3]
-            
+        
             if not val == (None, None, None):            
-                self.ids.x_label.text = "X: " + str(val[1])
-                self.ids.y_label.text = "Y: " + str((-1*val[0]))
-                self.ids.z_label.text = "Z: " + str(val[2])
+                self.ids.x_label.text = f"X: {-1*val[1]:.3f}"
+                self.ids.y_label.text = f"X: {val[0]:.3f}"
+                self.ids.z_label.text = f"X: {val[2]:.3f}"
                 self.collector_X_Y(val)
                 self.mq.send_msg(str(val))
         except Exception as e:

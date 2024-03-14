@@ -1,4 +1,4 @@
-<CircleMAX@BoxLayout>:
+<FullCircle@BoxLayout>:
     size: 100, 100
     canvas.before:
         Color:
@@ -6,11 +6,16 @@
         Ellipse:
             pos: self.pos     # Position of the circle (same as the widget's position)
             size: 100, 100
+
+<HollowCircle@BoxLayout>:
+    size: 100, 100
+    canvas.before:
         Color:
             rgba:1,1,1,1
         Line:
             width: 2
             circle: (self.center_x, self.center_y, min(50, 50))
+            
             # pos: self.pos     # Position of the circle (same as the widget's position)
             # size: 100, 100
       
@@ -49,9 +54,11 @@
                     AxisY: 
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         size_hint: 0.0, 1.0
-                    CircleMAX:
+                    FullCircle:
                         size_hint: None, None
                         pos_hint: {'center_x': root.pos_x, 'center_y': root.pos_y}
+                    HollowCircle: 
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
         BoxLayout:
             size_hint_x: 0.25
