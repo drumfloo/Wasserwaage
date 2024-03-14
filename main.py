@@ -168,8 +168,8 @@ class StartScreen(Screen):
     def collector_X_Y(self, pos):
         """Takes the sensor data Tuple and adds to x/y array respectively"""
         if len(self.arr_of_X) < 6 and len(self.arr_of_Y) < 6:
-            self.arr_of_X.append(pos[0])
-            self.arr_of_Y.append(pos[1])
+            self.arr_of_X.append(pos[1])
+            self.arr_of_Y.append(pos[0])
         else:
             print(f"collector_X_Y() else-clause = X:{self.arr_of_X} Y:{self.arr_of_Y}")
             self.average_pos(self.arr_of_X, self.arr_of_Y)
