@@ -10,7 +10,7 @@ import json
 from kivy.uix.boxlayout import BoxLayout
 from configparser import ConfigParser
 from kivy.clock import Clock
-from plyer import accelerometer
+from plyer import accelerometer, orientation
 import time
 import ssl
 
@@ -18,7 +18,7 @@ import ssl
 
 class ConfigScreen(Screen):
         
-    credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
+    #credentialKeys = ["mqtt_host", "port", "userName", "password", "fullTopic", "intervals", "dimensions"]
     userIN = {}
 
     def __init__(self, **kwargs):
@@ -72,7 +72,7 @@ class ConfigScreen(Screen):
             if 'port' in credentials:
                 self.ids.port_input.text = credentials['port']               
             if 'topic' in credentials:             
-                self.ids.full_topic_input.text =credentials["topic"]
+                self.ids.full_topic_input.text = credentials["topic"]
         
         
 
@@ -110,7 +110,6 @@ class ConfigScreen(Screen):
             self.mq.build_connection()
             
             self.save_values()
-            self.mq.send_msg("geht")
             self.notification("Connected")
 
         except Exception as e:
@@ -137,6 +136,11 @@ class StartScreen(Screen):
     pos_x = NumericProperty(0.5)
     pos_z = NumericProperty(0.5)
 
+
+    arr_of_X = [0, 0]
+    arr_of_Y = [0, 0]
+
+
     def __init__(self, **kw):
         super().__init__(**kw)
         # self.direction = BooleanProperty(False)
@@ -147,9 +151,7 @@ class StartScreen(Screen):
         except Exception as e:
             print(e)
               
-      
 
-        #self.movement()
 
     
     def btn_config(self):
@@ -158,9 +160,25 @@ class StartScreen(Screen):
         sm.current = 'config'
 
 
-    def update_dragonfly(self, pos):
-        self.pos_x = pos[0] / 20 + 0.5
-        self.pos_y = pos[1] / 20 + 0.5
+
+    # Libellen-smoother*********************************************   
+    def collector_X_Y(self, pos):
+        """Takes the sensor data Tuple and adds to x/y array respectively"""
+        if len(self.arr_of_X) < 6 and len(self.arr_of_Y) < 6:
+            self.arr_of_X.append(pos[0])
+            self.arr_of_Y.append(pos[1])
+        else:
+            print(f"collector_X_Y() else-clause = X:{self.arr_of_X} Y:{self.arr_of_Y}")
+            self.average_pos(self.arr_of_X, self.arr_of_Y)
+            
+            
+    def average_pos(self, arrayX, arrayY):
+        """Gets acceleration data, sends it to label & to the smoothening-process logic"""
+        self.pos_x = (round(sum(arrayX) / len(arrayX), 1)) / 20 + 0.5
+        self.pos_y = (round(sum(arrayY) / len(arrayY), 1)) / 20 + 0.5
+
+        self.arr_of_X = [0, 0]
+        self.arr_of_Y = [0, 0]
 
 
     def get_acceleration(self, dt):
@@ -171,7 +189,7 @@ class StartScreen(Screen):
                 self.ids.x_label.text = "X: " + str(val[0])
                 self.ids.y_label.text = "Y: " + str(val[1])
                 self.ids.z_label.text = "Z: " + str(val[2])
-                self.update_dragonfly(val)
+                self.collector_X_Y(val)
                 self.mq.send_msg(str(val))
         except Exception as e:
             print(e) 
@@ -185,14 +203,12 @@ class ScaleApp(App):
         sm = ScreenManager()
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
-        #libelle = Libelle()
+        orientation.set_landscape()
         ssl._create_default_https_context = ssl._create_stdlib_context
         sm.add_widget(start_screen)
         sm.add_widget(config_screen)
-        #sm.add_widget(libelle)
+        
         return sm
     
 if __name__ == '__main__':
     ScaleApp().run()
-    mq = MQTTconnector()
-    mq.build_connection()
