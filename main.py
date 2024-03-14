@@ -13,6 +13,9 @@ from kivy.clock import Clock
 from plyer import accelerometer, orientation
 import time
 import ssl
+from kivy.config import Config
+
+Config.set('graphics', 'orientation', 'landscape')
 
 
 
