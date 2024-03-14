@@ -11,7 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from plyer import accelerometer
 import time
-
+from plyer import orientation
 
 
 class ConfigScreen(Screen):
@@ -149,7 +149,7 @@ class StartScreen(Screen):
 # Libellen-smoother*********************************************   
     def collector_X_Y(self, pos):
         """Takes the sensor data Tuple and adds to x/y array respectively"""
-        if len(self.arr_of_X) < 10 and len(self.arr_of_Y) < 10:
+        if len(self.arr_of_X) < 6 and len(self.arr_of_Y) < 6:
             self.arr_of_X.append(pos[0])
             self.arr_of_Y.append(pos[1])
         else:
@@ -198,6 +198,7 @@ class StartScreen(Screen):
 
 class ScaleApp(App):   
     def build(self):
+        orientation.set_landscape(reverse=False)
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
