@@ -97,7 +97,7 @@ class ConfigScreen(Screen):
         with open("mqtt/mqtt_config.json", "w") as outfile: 
             json.dump(dict_config, outfile)
     
-    # Notification
+    
     def notification(self, msg: str):
         """Notification function to show popup. *msg* means the message to show in the popup"""
         popup = Popup(
@@ -147,6 +147,7 @@ class StartScreen(Screen):
 # Versuchsfeld "Libellen-smoother"********************************************
     
     def collector_X_Y(self, pos):
+        """Takes the sensor data Tuple and adds to x/y array respectively"""
         if len(self.arr_of_X) < 5 and len(self.arr_of_Y) < 5:
             self.arr_of_X.append(pos[0])
             self.arr_of_Y.append(pos[1])
@@ -156,8 +157,9 @@ class StartScreen(Screen):
             
             
     def average_pos(self, arrayX, arrayY):
-        self.pos_x = round(sum(arrayX) / len(arrayX), 1)
-        self.pos_y= round(sum(arrayY) / len(arrayY), 1)
+        """Updates position of libelle. Smoothening the noise from sensor"""
+        self.pos_x = round(sum(arrayX) / len(arrayX), 1) / 20 + 0.5
+        self.pos_y= round(sum(arrayY) / len(arrayY), 1) / 20 + 0.5
         
         print(f"average_pos() X-wert = {self.pos_x}")
         print(f"average_pos() Y-wert = {self.pos_y}")
