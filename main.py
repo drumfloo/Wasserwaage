@@ -106,7 +106,7 @@ class ConfigScreen(Screen):
         title = msg,
         #content='Cant establish a working connection...',
         size_hint = (None, None),
-        size = (250, 100), #size=(Window.width / 3, Window.height / 3),
+        size = (250, 250), #size=(Window.width / 3, Window.height / 3),
         auto_dismiss = True,
         )
         # on_press=popup.dismiss
