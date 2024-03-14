@@ -111,24 +111,26 @@ class ConfigScreen(Screen):
         """Checks if connection credentials set correct and connection can be ethablished"""
         try:
             self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
-            self.mq.build_connection()
+           
             
+            if self.mq.build_connection():
+                self.notification("Connected")
+            else: 
+                self.notification("No Valid Connection")
+           
             self.save_values()
-            self.notification("Connected")
 
         except Exception as e:
-            print(e)
-            self.notification(str(e) + " Connection not ready")
+            self.notification("Invalid input")
 
     
-    # Notification
     def notification(self, msg: str):
         """Notification function to show popup. *msg* means the message to show in the popup"""
         popup = Popup(
         title = msg,
         #content='Cant establish a working connection...',
         size_hint = (None, None),
-        size = (250, 250), #size=(Window.width / 3, Window.height / 3),
+        size = (500, 300), #size=(Window.width / 3, Window.height / 3),
         auto_dismiss = True,
         )
         # on_press=popup.dismiss
