@@ -147,7 +147,7 @@ class StartScreen(Screen):
 # Versuchsfeld "Libellen-smoother"********************************************
     
     def collector_X_Y(self, pos):
-        if len(self.arr_of_X) < 10 and len(self.arr_of_Y) < 10:
+        if len(self.arr_of_X) < 5 and len(self.arr_of_Y) < 5:
             self.arr_of_X.append(pos[0])
             self.arr_of_Y.append(pos[1])
         else:
@@ -156,14 +156,12 @@ class StartScreen(Screen):
             
             
     def average_pos(self, arrayX, arrayY):
-        self.pos_x = sum(arrayX) / len(arrayX)
-        self.pos_y= sum(arrayY) / len(arrayY)
-        # pos_smoothened_X = pos_smoothened_X / len(arrayX) 
-        # pos_smoothened_Y = pos_smoothened_Y / len(arrayY) 
+        self.pos_x = round(sum(arrayX) / len(arrayX), 1)
+        self.pos_y= round(sum(arrayY) / len(arrayY), 1)
+        
         print(f"average_pos() X-wert = {self.pos_x}")
         print(f"average_pos() Y-wert = {self.pos_y}")
-        # self.pos_x = pos_smoothened_X
-        # self.pos_y = pos_smoothened_Y
+    
         self.arr_of_X = [0, 0]
         self.arr_of_Y = [0, 0]
 
