@@ -98,9 +98,12 @@ class ConfigScreen(Screen):
 
     def btn_go(self):
         """Checks necessary login credentials"""
-        for value in ["mqtt_host", "port", "fullTopic"]:
-            if self.userIN[value] == "":
-                self.notification("Error - connection not set through missing informations")
+        try:
+            for value in ["mqtt_host", "port", "fullTopic"]:
+                if self.userIN[value] == "":
+                    self.notification("Error - connection not set through missing informations")
+        except Exception as e:
+            print(e)
             
         sm = self.manager
         sm.current = 'start'
