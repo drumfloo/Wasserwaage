@@ -192,8 +192,8 @@ class StartScreen(Screen):
         
             if not val == (None, None, None):            
                 self.ids.x_label.text = f"X: {-1*val[1]:.3f}"
-                self.ids.y_label.text = f"X: {val[0]:.3f}"
-                self.ids.z_label.text = f"X: {val[2]:.3f}"
+                self.ids.y_label.text = f"Y: {val[0]:.3f}"
+                self.ids.z_label.text = f"Z: {val[2]:.3f}"
                 self.collector_X_Y(val)
                 self.mq.send_msg(str(val))
         except Exception as e:
