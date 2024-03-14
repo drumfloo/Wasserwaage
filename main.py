@@ -188,8 +188,8 @@ class StartScreen(Screen):
             val = accelerometer.acceleration[:3]
             
             if not val == (None, None, None):            
-                self.ids.x_label.text = "X: " + str(val[0])
-                self.ids.y_label.text = "Y: " + str(val[1])
+                self.ids.x_label.text = "X: " + str(val[1])
+                self.ids.y_label.text = "Y: " + str((-1*val[0]))
                 self.ids.z_label.text = "Z: " + str(val[2])
                 self.collector_X_Y(val)
                 self.mq.send_msg(str(val))

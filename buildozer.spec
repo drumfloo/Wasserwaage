@@ -24,6 +24,9 @@ ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
 ios.ios_deploy_branch = 1.12.2
 ios.codesign.allowed = false
 
+icon.filename = icon.png
+icon.entry_point = main.ScaleApp
+
 [buildozer]
 log_level = 2
 warn_on_root = 1
