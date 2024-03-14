@@ -165,7 +165,7 @@ class StartScreen(Screen):
 
 
 
-    # Libellen-smoother*********************************************   
+    # Libellen-smoother********************************************   
     def collector_X_Y(self, pos):
         """Takes the sensor data Tuple and adds to x/y array respectively"""
         if len(self.arr_of_X) < 6 and len(self.arr_of_Y) < 6:
