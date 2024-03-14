@@ -10,7 +10,7 @@ source.include_exts = py,png,jpg,kv,atlas,mp3
 version = 0.1
 requirements = python3,kivy,plyer,paho-mqtt
 
-android.permissions = internet, read_external_storage, write_external_storage
+android.permissions = INTERNET
 android.orientation = landscape
 orientation = landscape
 fullscreen = 0
