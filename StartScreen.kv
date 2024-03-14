@@ -3,6 +3,7 @@
     canvas.before:
         Color:
             rgba:0.2,1,0.2,1
+            rgba:0.2,1,0.2,1
         Ellipse:
             pos: self.pos     # Position of the circle (same as the widget's position)
             size: 100, 100
@@ -40,8 +41,26 @@
         Rectangle:
             pos: self.pos
             size: 2, root.height
+
+<AxisX@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba:0.5,0.5,1,1
+        Rectangle:
+            pos: self.pos
+            size: root.width, 2
+
+
+<AxisY@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba:0.5,0.5,1,1
+        Rectangle:
+            pos: self.pos
+            size: 2, root.height
     
 <StartScreen>:
+    BoxLayout:               
     BoxLayout:               
         Libelle:
             BoxLayout:

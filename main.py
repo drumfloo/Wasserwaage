@@ -89,7 +89,7 @@ class ConfigScreen(Screen):
         
 
 
-    # Buttons
+# Buttons *************************************************  
     def btn_back(self):
         """Navigate back to *sm.current* value defined in ScaleApp class"""
         sm = self.manager
@@ -128,7 +128,7 @@ class ConfigScreen(Screen):
         title = msg,
         #content='Cant establish a working connection...',
         size_hint = (None, None),
-        size = (250, 100), #size=(Window.width / 3, Window.height / 3),
+        size = (250, 250), #size=(Window.width / 3, Window.height / 3),
         auto_dismiss = True,
         )
         # on_press=popup.dismiss
@@ -201,11 +201,15 @@ class StartScreen(Screen):
 
   
 
-class ScaleApp(App):   
-    def build(self):        
+class ScaleApp(App):
+
+    def build(self):
+        self.icon = 'icon.png'
+        #orientation.set_landscape()
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
+        
         start_screen = StartScreen(name='start')
         config_screen = ConfigScreen(name='config')
         orientation.set_landscape()
