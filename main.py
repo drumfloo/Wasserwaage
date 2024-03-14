@@ -183,11 +183,8 @@ class StartScreen(Screen):
 
             if not val == (None, None, None):            
                 self.ids.x_label.text = f"X: {val[0]:.3f}"  
-                print(str(val[0]))
                 self.ids.y_label.text = f"Y: {val[1]:.3f}"  
-                print(str(val[1]))
                 self.ids.z_label.text = f"Z: {val[2]:.3f}"  
-                print(str(val[2]))
 
                 #self.update_dragonfly(val) # ORIGINAL (FUNZT)
                 self.collector_X_Y(val)
@@ -218,5 +215,3 @@ if __name__ == '__main__':
     mq.build_connection()
     mq.send_msg("Sende eine Nachricht")
 
-#facades.Orientation.set_landscape(reverse=False)
-# facades.Orientation.set_sensor('landscape')
