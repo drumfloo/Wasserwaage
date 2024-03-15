@@ -23,12 +23,10 @@ class MQTTconnector:
             global port
             global mqtt_client
             mqtt_client= paho.Client(paho.CallbackAPIVersion.VERSION2 ,self.client_id)
-            retvalue = mqtt_client.connect(host,port)
-            return True
+            mqtt_client.connect(host,port)
         except Exception as e:
             print("Exception in build_connection")
             print(e)
-            return False
 
     def send_msg(self, msg):
         try:
