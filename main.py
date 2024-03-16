@@ -2,11 +2,9 @@ from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
-import json
 from mqtt.mqtt_connector import MQTTconnector
 from kivy.clock import Clock
 from kivy.properties import NumericProperty,BooleanProperty
-import json 
 from kivy.uix.boxlayout import BoxLayout
 from configparser import ConfigParser
 from kivy.clock import Clock
@@ -28,13 +26,13 @@ class ConfigScreen(Screen):
          self.mq = MQTTconnector()       
 
     def on_pre_enter(self, *args):
-        '''After enter fill text fields'''
+        '''Author Necip After enter fill text fields'''
         time.sleep(0.5)
         self.load_saved_values()
 
 
     def save_values(self):
-        '''Save the user input in a Config file'''
+        '''Author Necip Save the user input in a Config file'''
         config = ConfigParser()
         
         try:
@@ -56,7 +54,7 @@ class ConfigScreen(Screen):
 
 
     def load_saved_values(self):
-        '''Read Config file'''
+        '''Author Necip Read Config file'''
         config = ConfigParser()
 
         
@@ -82,7 +80,7 @@ class ConfigScreen(Screen):
 
 
     def login_data_fetcher(self, type, value):
-        """Fetches login data for mqtt connection. Saved as 
+        """Author Florian Fetches login data for mqtt connection. Saved as 
         key:value pairs in a Python dict"""
         self.userIN[type] = value
         
@@ -97,7 +95,7 @@ class ConfigScreen(Screen):
         
 
     def btn_go(self):
-        """Checks necessary login credentials"""
+        """Author Necip, Florian Checks necessary login credentials"""
         try:
             for value in ["mqtt_host", "port", "fullTopic"]:
                 if self.userIN[value] == "":
@@ -111,7 +109,7 @@ class ConfigScreen(Screen):
 
     
     def btn_check_connection(self):
-        """Checks if connection credentials set correct and connection can be ethablished"""
+        """Author Florian, Necip Checks if connection credentials set correct and connection can be ethablished"""
         try:
             self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
            
@@ -128,7 +126,7 @@ class ConfigScreen(Screen):
 
     
     def notification(self, msg: str):
-        """Notification function to show popup. *msg* means the message to show in the popup"""
+        """Author Florian Notification function to show popup. *msg* means the message to show in the popup"""
         popup = Popup(
         title = msg,
         #content='Cant establish a working connection...',
@@ -164,7 +162,7 @@ class StartScreen(Screen):
 
     
     def btn_config(self):
-        """Switches to configuration panel"""
+        """Author Florian Switches to configuration panel"""
         sm = self.manager
         sm.current = 'config'
 
@@ -172,7 +170,7 @@ class StartScreen(Screen):
 
     # Libellen-smoother********************************************   
     def collector_X_Y(self, pos):
-        """Takes the sensor data Tuple and adds to x/y array respectively"""
+        """Author Florian Takes the sensor data Tuple and adds to x/y array respectively"""
         if len(self.arr_of_X) < 6 and len(self.arr_of_Y) < 6:
             self.arr_of_X.append(-1*pos[1])
             self.arr_of_Y.append(pos[0])
@@ -181,17 +179,17 @@ class StartScreen(Screen):
             self.average_pos(self.arr_of_X, self.arr_of_Y)
             
             
-    def average_pos(self, arrayX, arrayY):
-        """Gets acceleration data, sends it to label & to the smoothening-process logic"""
-        self.pos_x = (round(sum(arrayX) / len(arrayX), 1)) / 20 + 0.5
-        self.pos_y = (round(sum(arrayY) / len(arrayY), 1)) / 20 + 0.5
+    def average_pos(self, array_x, array_y):
+        """Author Florian, Dominik, Gets acceleration data, sends it to label & to the smoothening-process logic"""
+        self.pos_x = (round(sum(array_x) / len(array_x), 1)) / 20 + 0.5
+        self.pos_y = (round(sum(array_y) / len(array_y), 1)) / 20 + 0.5
 
         self.arr_of_X = [0, 0]
         self.arr_of_Y = [0, 0]
 
 
     def get_acceleration(self, dt):
-        '''Get accelerometer values, send it to mqtt and show it'''
+        '''Author Necip, Dominik, Florian Get accelerometer values, send it to mqtt and show it'''
         try:
             val = accelerometer.acceleration[:3]
         
@@ -209,6 +207,8 @@ class StartScreen(Screen):
 class ScaleApp(App):
 
     def build(self):
+        """Author StartScreen.kv: Florian (Logger-Button and Numbers), Dominik (Libelle and Canvas)
+        Author ConfigScreen: Florian"""
         self.icon = 'icon.png'
         #orientation.set_landscape()
         Builder.load_file('StartScreen.kv')

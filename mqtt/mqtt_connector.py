@@ -18,6 +18,7 @@ class MQTTconnector:
 
 
     def build_connection(self):
+        """Author Necip Builds connection and returns boolean if its successful"""
         try:
             global host
             global port
@@ -31,6 +32,7 @@ class MQTTconnector:
             return False
 
     def send_msg(self, msg):
+        """Author Necip Publishing message"""
         try:
             global topic
             global mqtt_client
@@ -43,5 +45,6 @@ class MQTTconnector:
             print(e)
 
     def disconnection(self):
+       """Author Necip Disconnects client from Server"""
        global mqtt_client
        mqtt_client.disconnect()
