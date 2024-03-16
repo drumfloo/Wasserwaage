@@ -112,13 +112,7 @@ class ConfigScreen(Screen):
         """Author Florian, Necip Checks if connection credentials set correct and connection can be ethablished"""
         try:
             self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
-           
-            
-            if self.mq.build_connection():
-                self.notification("Connected")
-            else: 
-                self.notification("No Valid Connection")
-           
+            self.mq.build_connection()
             self.save_values()
 
         except Exception as e:
