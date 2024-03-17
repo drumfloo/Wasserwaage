@@ -9,8 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from configparser import ConfigParser
 from kivy.clock import Clock
 from plyer import accelerometer, orientation
-import time
-import ssl
+import time, ssl
 from kivy.config import Config
 
 Config.set('graphics', 'orientation', 'landscape')
@@ -39,13 +38,23 @@ class ConfigScreen(Screen):
             config.read('config.ini')
         except FileNotFoundError:
             pass
+
+        if "userName" in self.userIN:
+            pass
+        else:
+            self.userIN["userName"] = ""
+
+        if "password" in self.userIN:
+            pass
+        else:
+            self.userIN["password"] = ""
         
         config['Credentials'] = {
-            "host": self.userIN["mqtt_host"],
-            "port": self.userIN["port"],
-            "topic": self.userIN["fullTopic"],
-            "username": self.userIN["userName"],
-            "password": self.userIN["password"]
+            "host": self.userIN.get("mqtt_host"),
+            "port": self.userIN.get("port"),
+            "topic": self.userIN.get("fullTopic"),
+            "username": self.userIN.get("userName"),
+            "password": self.userIN.get("password")
         }
 
         with open('config.ini', 'w') as configfile:
@@ -66,15 +75,15 @@ class ConfigScreen(Screen):
         if 'Credentials' in config:
             credentials = config['Credentials']
             if 'username' in credentials:
-                self.ids.username_input.text = credentials['username']
+                self.ids.username_input.text = credentials.get('username')
             if 'password' in credentials:
-                self.ids.password_input.text = credentials['password']
+                self.ids.password_input.text = credentials.get('password')
             if 'host' in credentials:
-                self.ids.mqtt_host_input.text   = credentials['host']
+                self.ids.mqtt_host_input.text   = credentials.get('host')
             if 'port' in credentials:
-                self.ids.port_input.text = credentials['port']               
+                self.ids.port_input.text = credentials.get('port')               
             if 'topic' in credentials:             
-                self.ids.full_topic_input.text = credentials["topic"]
+                self.ids.full_topic_input.text = credentials.get("topic")
         
         
 
@@ -111,7 +120,7 @@ class ConfigScreen(Screen):
     def btn_check_connection(self):
         """Author Florian, Necip Checks if connection credentials set correct and connection can be ethablished"""
         try:
-            self.mq = MQTTconnector(shost=self.userIN['mqtt_host'],sport=int(self.userIN['port']),stopic=self.userIN['fullTopic'])
+            self.mq = MQTTconnector(shost=self.userIN.get('mqtt_host'),sport=int(self.userIN.get('port')),stopic=self.userIN.get('fullTopic'))
             self.mq.build_connection()
             self.save_values()
 
@@ -186,13 +195,14 @@ class StartScreen(Screen):
         '''Author Necip, Dominik, Florian Get accelerometer values, send it to mqtt and show it'''
         try:
             val = accelerometer.acceleration[:3]
-        
+            
             if not val == (None, None, None):            
                 self.ids.x_label.text = f"X: {-1*val[1]:.3f}"
                 self.ids.y_label.text = f"Y: {val[0]:.3f}"
                 self.ids.z_label.text = f"Z: {val[2]:.3f}"
                 self.collector_X_Y(val)
-                self.mq.send_msg(str(val))
+                dict_values = {"X": f"{-1*val[1]:.3f}","Y": f"{val[0]:.3f}", "Z": f"{val[2]:.3f}" }
+                self.mq.send_msg(str(dict_values))
         except Exception as e:
             print(e) 
 
@@ -204,7 +214,6 @@ class ScaleApp(App):
         """Author StartScreen.kv: Florian (Logger-Button and Numbers), Dominik (Libelle and Canvas)
         Author ConfigScreen: Florian"""
         self.icon = 'icon.png'
-        #orientation.set_landscape()
         Builder.load_file('StartScreen.kv')
         Builder.load_file('ConfigScreen.kv')
         sm = ScreenManager()
